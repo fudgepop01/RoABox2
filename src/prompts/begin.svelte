@@ -7,9 +7,7 @@
         <Label>Start from Scratch</Label>
       </Button>
     </BtnGroup>
-
   </FormField>
-  <Editor></Editor>
 </div>
 
 <!-- SCRIPT STARTS HERE -->
@@ -20,8 +18,8 @@
   import Button, { Label, Group as BtnGroup } from '@smui/button';
   import FormField from '@smui/form-field';
 
+  import Timeline from '../components/timeline/Timeline.svelte';
   import Upload from './upload.svelte';
-  import Editor from '../components/monaco/monaco-editor.svelte';
 
   const dispatch = createEventDispatcher();
 </script>

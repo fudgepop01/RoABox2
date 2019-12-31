@@ -42,7 +42,7 @@
   const dispatch = createEventDispatcher();
  
   const updateFrameCount = (evt) => {
-    frameCount.set(parseInt(evt.target.value));
+    if (evt.target.value > 0) frameCount.set(parseInt(evt.target.value));
   }
 </script>
 

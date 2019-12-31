@@ -4,6 +4,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import json from 'rollup-plugin-json';
 import postcss from 'rollup-plugin-postcss';
+import url from '@rollup/plugin-url';
 import { terser } from 'rollup-plugin-terser';
 
 const production = !process.env.ROLLUP_WATCH;
@@ -51,6 +52,12 @@ export default {
 					]
 				}]
 			]
+		}),
+		url({
+			include: ['**/*.woff', '**/*.woff2'],
+			limit: Infinity,
+			emitFiles: true,
+			destDir: 'public/test/files'
 		}),
 
 		// Watch the `public` directory and refresh the

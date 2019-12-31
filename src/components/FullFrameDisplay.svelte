@@ -1,10 +1,10 @@
 {#each new Array($frameCount).fill(0) as _, i}
   <div 
-    style="
-      width: {$spritesheet.width / $frameCount}px;
+    style="width: {$spritesheet.width / $frameCount}px;
       height: {$spritesheet.height}px;
       background-image: url({$spritesheet.dataUrl});
       background-position: {($spritesheet.width / $frameCount) * -i}px 0;
+      opacity: {$currentFrame !== i && opacity ? '0.5' : '1'};
       display: inline-block;
       border-right: {(i !== $frameCount - 1) ? '1px solid black' : 'none'};
       position: relative;
@@ -18,4 +18,5 @@
 
 <script>
   import { spritesheet, frameCount, currentFrame } from '../store/spritesheet.js';
+  export let opacity = false;
 </script> 

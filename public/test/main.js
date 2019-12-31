@@ -163,9 +163,6 @@ function set_input_value(input, value) {
 function set_style(node, key, value, important) {
     node.style.setProperty(key, value, important ? 'important' : '');
 }
-function toggle_class(element, name, toggle) {
-    element.classList[toggle ? 'add' : 'remove'](name);
-}
 function custom_event(type, detail) {
     const e = document.createEvent('CustomEvent');
     e.initCustomEvent(type, false, false, detail);
@@ -960,6 +957,7 @@ function getNormalizedEventCoords(evt, pageOffset, clientRect) {
     }
     return { x: normalizedX, y: normalizedY };
 }
+//# sourceMappingURL=util.js.map
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
@@ -1096,6 +1094,7 @@ var MDCFoundation = /** @class */ (function () {
     };
     return MDCFoundation;
 }());
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -1193,6 +1192,7 @@ var MDCComponent = /** @class */ (function () {
     };
     return MDCComponent;
 }());
+//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -1244,6 +1244,7 @@ function applyPassive(globalObj, forceRefresh) {
     }
     return supportsPassive_ ? { passive: true } : false;
 }
+//# sourceMappingURL=events.js.map
 
 /**
  * @license
@@ -1273,6 +1274,7 @@ function matches(element, selector) {
         || element.msMatchesSelector;
     return nativeMatches.call(element, selector);
 }
+//# sourceMappingURL=ponyfill.js.map
 
 /**
  * @license
@@ -1321,6 +1323,7 @@ var numbers = {
     PADDING: 10,
     TAP_DELAY_MS: 300,
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -1775,6 +1778,7 @@ var MDCRippleFoundation = /** @class */ (function (_super) {
     };
     return MDCRippleFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -1880,9 +1884,12 @@ var MDCRipple = /** @class */ (function (_super) {
     };
     return MDCRipple;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 function Ripple(node, [ripple, props = {unbounded: false, color: null}]) {
   let instance = null;
+  let addLayoutListener = getContext('SMUI:addLayoutListener');
+  let removeLayoutListener;
 
   function handleProps(ripple, props) {
     if (ripple && !instance) {
@@ -1920,6 +1927,16 @@ function Ripple(node, [ripple, props = {unbounded: false, color: null}]) {
     handleProps(ripple, props);
   }
 
+  if (addLayoutListener) {
+    removeLayoutListener = addLayoutListener(layout);
+  }
+
+  function layout() {
+    if (instance) {
+      instance.layout();
+    }
+  }
+
   return {
     update([ripple, props = {unbounded: false, color: null}]) {
       handleProps(ripple, props);
@@ -1933,6 +1950,10 @@ function Ripple(node, [ripple, props = {unbounded: false, color: null}]) {
         node.classList.remove('mdc-ripple-surface--primary');
         node.classList.remove('mdc-ripple-surface--accent');
       }
+
+      if (removeLayoutListener) {
+        removeLayoutListener();
+      }
     }
   }
 }
@@ -1941,7 +1962,7 @@ function Ripple(node, [ripple, props = {unbounded: false, color: null}]) {
 
 const file = "node_modules\\@smui\\button\\Button.svelte";
 
-// (23:0) {:else}
+// (26:0) {:else}
 function create_else_block(ctx) {
 	var button, useActions_action, forwardEvents_action, Ripple_action, current;
 
@@ -1949,7 +1970,7 @@ function create_else_block(ctx) {
 	const default_slot = create_slot(default_slot_template, ctx, null);
 
 	var button_levels = [
-		{ class: "mdc-button " + ctx.className },
+		{ class: "\n      mdc-button\n      " + ctx.className + "\n      " + (ctx.variant === 'raised' ? 'mdc-button--raised' : '') + "\n      " + (ctx.variant === 'unelevated' ? 'mdc-button--unelevated' : '') + "\n      " + (ctx.variant === 'outlined' ? 'mdc-button--outlined' : '') + "\n      " + (ctx.dense ? 'mdc-button--dense' : '') + "\n      " + (ctx.color === 'secondary' ? 'smui-button--color-secondary' : '') + "\n      " + (ctx.context === 'card:action' ? 'mdc-card__action' : '') + "\n      " + (ctx.context === 'card:action' ? 'mdc-card__action--button' : '') + "\n      " + (ctx.context === 'dialog:action' ? 'mdc-dialog__button' : '') + "\n      " + (ctx.context === 'top-app-bar:navigation' ? 'mdc-top-app-bar__navigation-icon' : '') + "\n      " + (ctx.context === 'top-app-bar:action' ? 'mdc-top-app-bar__action-item' : '') + "\n      " + (ctx.context === 'snackbar' ? 'mdc-snackbar__action' : '') + "\n    " },
 		ctx.actionProp,
 		ctx.defaultProp,
 		ctx.props
@@ -1967,18 +1988,7 @@ function create_else_block(ctx) {
 			if (default_slot) default_slot.c();
 
 			set_attributes(button, button_data);
-			toggle_class(button, "mdc-button--raised", ctx.variant === 'raised');
-			toggle_class(button, "mdc-button--unelevated", ctx.variant === 'unelevated');
-			toggle_class(button, "mdc-button--outlined", ctx.variant === 'outlined');
-			toggle_class(button, "mdc-button--dense", ctx.dense);
-			toggle_class(button, "smui-button--color-secondary", ctx.color === 'secondary');
-			toggle_class(button, "mdc-card__action", ctx.context === 'card:action');
-			toggle_class(button, "mdc-card__action--button", ctx.context === 'card:action');
-			toggle_class(button, "mdc-dialog__button", ctx.context === 'dialog:action');
-			toggle_class(button, "mdc-top-app-bar__navigation-icon", ctx.context === 'top-app-bar:navigation');
-			toggle_class(button, "mdc-top-app-bar__action-item", ctx.context === 'top-app-bar:action');
-			toggle_class(button, "mdc-snackbar__action", ctx.context === 'snackbar');
-			add_location(button, file, 23, 2, 898);
+			add_location(button, file, 26, 2, 971);
 		},
 
 		l: function claim(nodes) {
@@ -2007,7 +2017,7 @@ function create_else_block(ctx) {
 			}
 
 			set_attributes(button, get_spread_update(button_levels, [
-				(changed.className) && { class: "mdc-button " + ctx.className },
+				(changed.className || changed.variant || changed.dense || changed.color || changed.context) && { class: "\n      mdc-button\n      " + ctx.className + "\n      " + (ctx.variant === 'raised' ? 'mdc-button--raised' : '') + "\n      " + (ctx.variant === 'unelevated' ? 'mdc-button--unelevated' : '') + "\n      " + (ctx.variant === 'outlined' ? 'mdc-button--outlined' : '') + "\n      " + (ctx.dense ? 'mdc-button--dense' : '') + "\n      " + (ctx.color === 'secondary' ? 'smui-button--color-secondary' : '') + "\n      " + (ctx.context === 'card:action' ? 'mdc-card__action' : '') + "\n      " + (ctx.context === 'card:action' ? 'mdc-card__action--button' : '') + "\n      " + (ctx.context === 'dialog:action' ? 'mdc-dialog__button' : '') + "\n      " + (ctx.context === 'top-app-bar:navigation' ? 'mdc-top-app-bar__navigation-icon' : '') + "\n      " + (ctx.context === 'top-app-bar:action' ? 'mdc-top-app-bar__action-item' : '') + "\n      " + (ctx.context === 'snackbar' ? 'mdc-snackbar__action' : '') + "\n    " },
 				(changed.actionProp) && ctx.actionProp,
 				(changed.defaultProp) && ctx.defaultProp,
 				(changed.props) && ctx.props
@@ -2019,29 +2029,6 @@ function create_else_block(ctx) {
 
 			if (typeof Ripple_action.update === 'function' && changed.ripple) {
 				Ripple_action.update.call(null, [ctx.ripple, {unbounded: false}]);
-			}
-
-			if ((changed.className || changed.variant)) {
-				toggle_class(button, "mdc-button--raised", ctx.variant === 'raised');
-				toggle_class(button, "mdc-button--unelevated", ctx.variant === 'unelevated');
-				toggle_class(button, "mdc-button--outlined", ctx.variant === 'outlined');
-			}
-
-			if ((changed.className || changed.dense)) {
-				toggle_class(button, "mdc-button--dense", ctx.dense);
-			}
-
-			if ((changed.className || changed.color)) {
-				toggle_class(button, "smui-button--color-secondary", ctx.color === 'secondary');
-			}
-
-			if ((changed.className || changed.context)) {
-				toggle_class(button, "mdc-card__action", ctx.context === 'card:action');
-				toggle_class(button, "mdc-card__action--button", ctx.context === 'card:action');
-				toggle_class(button, "mdc-dialog__button", ctx.context === 'dialog:action');
-				toggle_class(button, "mdc-top-app-bar__navigation-icon", ctx.context === 'top-app-bar:navigation');
-				toggle_class(button, "mdc-top-app-bar__action-item", ctx.context === 'top-app-bar:action');
-				toggle_class(button, "mdc-snackbar__action", ctx.context === 'snackbar');
 			}
 		},
 
@@ -2067,7 +2054,7 @@ function create_else_block(ctx) {
 			if (Ripple_action && typeof Ripple_action.destroy === 'function') Ripple_action.destroy();
 		}
 	};
-	dispatch_dev("SvelteRegisterBlock", { block, id: create_else_block.name, type: "else", source: "(23:0) {:else}", ctx });
+	dispatch_dev("SvelteRegisterBlock", { block, id: create_else_block.name, type: "else", source: "(26:0) {:else}", ctx });
 	return block;
 }
 
@@ -2079,7 +2066,7 @@ function create_if_block(ctx) {
 	const default_slot = create_slot(default_slot_template, ctx, null);
 
 	var a_levels = [
-		{ class: "mdc-button " + ctx.className },
+		{ class: "\n      mdc-button\n      " + ctx.className + "\n      " + (ctx.variant === 'raised' ? 'mdc-button--raised' : '') + "\n      " + (ctx.variant === 'unelevated' ? 'mdc-button--unelevated' : '') + "\n      " + (ctx.variant === 'outlined' ? 'mdc-button--outlined' : '') + "\n      " + (ctx.dense ? 'mdc-button--dense' : '') + "\n      " + (ctx.color === 'secondary' ? 'smui-button--color-secondary' : '') + "\n      " + (ctx.context === 'card:action' ? 'mdc-card__action' : '') + "\n      " + (ctx.context === 'card:action' ? 'mdc-card__action--button' : '') + "\n      " + (ctx.context === 'dialog:action' ? 'mdc-dialog__button' : '') + "\n      " + (ctx.context === 'top-app-bar:navigation' ? 'mdc-top-app-bar__navigation-icon' : '') + "\n      " + (ctx.context === 'top-app-bar:action' ? 'mdc-top-app-bar__action-item' : '') + "\n      " + (ctx.context === 'snackbar' ? 'mdc-snackbar__action' : '') + "\n    " },
 		{ href: ctx.href },
 		ctx.actionProp,
 		ctx.defaultProp,
@@ -2098,17 +2085,6 @@ function create_if_block(ctx) {
 			if (default_slot) default_slot.c();
 
 			set_attributes(a, a_data);
-			toggle_class(a, "mdc-button--raised", ctx.variant === 'raised');
-			toggle_class(a, "mdc-button--unelevated", ctx.variant === 'unelevated');
-			toggle_class(a, "mdc-button--outlined", ctx.variant === 'outlined');
-			toggle_class(a, "mdc-button--dense", ctx.dense);
-			toggle_class(a, "smui-button--color-secondary", ctx.color === 'secondary');
-			toggle_class(a, "mdc-card__action", ctx.context === 'card:action');
-			toggle_class(a, "mdc-card__action--button", ctx.context === 'card:action');
-			toggle_class(a, "mdc-dialog__button", ctx.context === 'dialog:action');
-			toggle_class(a, "mdc-top-app-bar__navigation-icon", ctx.context === 'top-app-bar:navigation');
-			toggle_class(a, "mdc-top-app-bar__action-item", ctx.context === 'top-app-bar:action');
-			toggle_class(a, "mdc-snackbar__action", ctx.context === 'snackbar');
 			add_location(a, file, 1, 2, 13);
 		},
 
@@ -2138,7 +2114,7 @@ function create_if_block(ctx) {
 			}
 
 			set_attributes(a, get_spread_update(a_levels, [
-				(changed.className) && { class: "mdc-button " + ctx.className },
+				(changed.className || changed.variant || changed.dense || changed.color || changed.context) && { class: "\n      mdc-button\n      " + ctx.className + "\n      " + (ctx.variant === 'raised' ? 'mdc-button--raised' : '') + "\n      " + (ctx.variant === 'unelevated' ? 'mdc-button--unelevated' : '') + "\n      " + (ctx.variant === 'outlined' ? 'mdc-button--outlined' : '') + "\n      " + (ctx.dense ? 'mdc-button--dense' : '') + "\n      " + (ctx.color === 'secondary' ? 'smui-button--color-secondary' : '') + "\n      " + (ctx.context === 'card:action' ? 'mdc-card__action' : '') + "\n      " + (ctx.context === 'card:action' ? 'mdc-card__action--button' : '') + "\n      " + (ctx.context === 'dialog:action' ? 'mdc-dialog__button' : '') + "\n      " + (ctx.context === 'top-app-bar:navigation' ? 'mdc-top-app-bar__navigation-icon' : '') + "\n      " + (ctx.context === 'top-app-bar:action' ? 'mdc-top-app-bar__action-item' : '') + "\n      " + (ctx.context === 'snackbar' ? 'mdc-snackbar__action' : '') + "\n    " },
 				(changed.href) && { href: ctx.href },
 				(changed.actionProp) && ctx.actionProp,
 				(changed.defaultProp) && ctx.defaultProp,
@@ -2151,29 +2127,6 @@ function create_if_block(ctx) {
 
 			if (typeof Ripple_action.update === 'function' && changed.ripple) {
 				Ripple_action.update.call(null, [ctx.ripple, {unbounded: false}]);
-			}
-
-			if ((changed.className || changed.variant)) {
-				toggle_class(a, "mdc-button--raised", ctx.variant === 'raised');
-				toggle_class(a, "mdc-button--unelevated", ctx.variant === 'unelevated');
-				toggle_class(a, "mdc-button--outlined", ctx.variant === 'outlined');
-			}
-
-			if ((changed.className || changed.dense)) {
-				toggle_class(a, "mdc-button--dense", ctx.dense);
-			}
-
-			if ((changed.className || changed.color)) {
-				toggle_class(a, "smui-button--color-secondary", ctx.color === 'secondary');
-			}
-
-			if ((changed.className || changed.context)) {
-				toggle_class(a, "mdc-card__action", ctx.context === 'card:action');
-				toggle_class(a, "mdc-card__action--button", ctx.context === 'card:action');
-				toggle_class(a, "mdc-dialog__button", ctx.context === 'dialog:action');
-				toggle_class(a, "mdc-top-app-bar__navigation-icon", ctx.context === 'top-app-bar:navigation');
-				toggle_class(a, "mdc-top-app-bar__action-item", ctx.context === 'top-app-bar:action');
-				toggle_class(a, "mdc-snackbar__action", ctx.context === 'snackbar');
 			}
 		},
 
@@ -2453,7 +2406,7 @@ function create_fragment$1(ctx) {
 	const default_slot = create_slot(default_slot_template, ctx, null);
 
 	var div_levels = [
-		{ class: "smui-button__group " + ctx.className },
+		{ class: "\n    smui-button__group\n    " + ctx.className + "\n    " + (ctx.variant === 'raised' ? 'smui-button__group--raised' : '') + "\n  " },
 		exclude(ctx.$$props, ['use', 'class', 'variant'])
 	];
 
@@ -2469,7 +2422,6 @@ function create_fragment$1(ctx) {
 			if (default_slot) default_slot.c();
 
 			set_attributes(div, div_data);
-			toggle_class(div, "smui-button__group--raised", ctx.variant === 'raised');
 			add_location(div, file$1, 0, 0, 0);
 		},
 
@@ -2499,16 +2451,12 @@ function create_fragment$1(ctx) {
 			}
 
 			set_attributes(div, get_spread_update(div_levels, [
-				(changed.className) && { class: "smui-button__group " + ctx.className },
+				(changed.className || changed.variant) && { class: "\n    smui-button__group\n    " + ctx.className + "\n    " + (ctx.variant === 'raised' ? 'smui-button__group--raised' : '') + "\n  " },
 				(changed.exclude || changed.$$props) && exclude(ctx.$$props, ['use', 'class', 'variant'])
 			]));
 
 			if (typeof useActions_action.update === 'function' && changed.use) {
 				useActions_action.update.call(null, ctx.use);
-			}
-
-			if ((changed.className || changed.variant)) {
-				toggle_class(div, "smui-button__group--raised", ctx.variant === 'raised');
 			}
 		},
 
@@ -2620,8 +2568,8 @@ function create_fragment$2(ctx) {
 	const default_slot = create_slot(default_slot_template, ctx, null);
 
 	var span_levels = [
-		{ class: ctx.className },
-		ctx.snackbarProps,
+		{ class: "\n    " + ctx.className + "\n    " + (ctx.context === 'button' ? 'mdc-button__label' : '') + "\n    " + (ctx.context === 'fab' ? 'mdc-fab__label' : '') + "\n    " + (ctx.context === 'chip' ? 'mdc-chip__text' : '') + "\n    " + (ctx.context === 'tab' ? 'mdc-tab__text-label' : '') + "\n    " + (ctx.context === 'image-list' ? 'mdc-image-list__label' : '') + "\n    " + (ctx.context === 'snackbar' ? 'mdc-snackbar__label' : '') + "\n  " },
+		((ctx.context === 'snackbar') ? {role: 'status', 'aria-live': 'polite'} : {}),
 		exclude(ctx.$$props, ['use', 'class'])
 	];
 
@@ -2637,12 +2585,6 @@ function create_fragment$2(ctx) {
 			if (default_slot) default_slot.c();
 
 			set_attributes(span, span_data);
-			toggle_class(span, "mdc-button__label", ctx.context === 'button');
-			toggle_class(span, "mdc-fab__label", ctx.context === 'fab');
-			toggle_class(span, "mdc-chip__text", ctx.context === 'chip');
-			toggle_class(span, "mdc-tab__text-label", ctx.context === 'tab');
-			toggle_class(span, "mdc-image-list__label", ctx.context === 'image-list');
-			toggle_class(span, "mdc-snackbar__label", ctx.context === 'snackbar');
 			add_location(span, file$2, 0, 0, 0);
 		},
 
@@ -2672,22 +2614,13 @@ function create_fragment$2(ctx) {
 			}
 
 			set_attributes(span, get_spread_update(span_levels, [
-				(changed.className) && { class: ctx.className },
-				(changed.snackbarProps) && ctx.snackbarProps,
+				(changed.className || changed.context) && { class: "\n    " + ctx.className + "\n    " + (ctx.context === 'button' ? 'mdc-button__label' : '') + "\n    " + (ctx.context === 'fab' ? 'mdc-fab__label' : '') + "\n    " + (ctx.context === 'chip' ? 'mdc-chip__text' : '') + "\n    " + (ctx.context === 'tab' ? 'mdc-tab__text-label' : '') + "\n    " + (ctx.context === 'image-list' ? 'mdc-image-list__label' : '') + "\n    " + (ctx.context === 'snackbar' ? 'mdc-snackbar__label' : '') + "\n  " },
+				(changed.context) && ((ctx.context === 'snackbar') ? {role: 'status', 'aria-live': 'polite'} : {}),
 				(changed.exclude || changed.$$props) && exclude(ctx.$$props, ['use', 'class'])
 			]));
 
 			if (typeof useActions_action.update === 'function' && changed.use) {
 				useActions_action.update.call(null, ctx.use);
-			}
-
-			if ((changed.className || changed.context)) {
-				toggle_class(span, "mdc-button__label", ctx.context === 'button');
-				toggle_class(span, "mdc-fab__label", ctx.context === 'fab');
-				toggle_class(span, "mdc-chip__text", ctx.context === 'chip');
-				toggle_class(span, "mdc-tab__text-label", ctx.context === 'tab');
-				toggle_class(span, "mdc-image-list__label", ctx.context === 'image-list');
-				toggle_class(span, "mdc-snackbar__label", ctx.context === 'snackbar');
 			}
 		},
 
@@ -2735,26 +2668,20 @@ function instance$2($$self, $$props, $$invalidate) {
 	};
 
 	$$self.$capture_state = () => {
-		return { use, className, snackbarProps };
+		return { use, className };
 	};
 
 	$$self.$inject_state = $$new_props => {
 		$$invalidate('$$props', $$props = assign(assign({}, $$props), $$new_props));
 		if ('use' in $$props) $$invalidate('use', use = $$new_props.use);
 		if ('className' in $$props) $$invalidate('className', className = $$new_props.className);
-		if ('snackbarProps' in $$props) $$invalidate('snackbarProps', snackbarProps = $$new_props.snackbarProps);
 	};
-
-	let snackbarProps;
-
-	$$invalidate('snackbarProps', snackbarProps = (context === 'snackbar') ? {role: 'status', 'aria-live': 'polite'} : {});
 
 	return {
 		forwardEvents,
 		use,
 		className,
 		context,
-		snackbarProps,
 		$$props,
 		$$props: $$props = exclude_internal_props($$props),
 		$$slots,
@@ -2814,6 +2741,7 @@ var cssClasses$1 = {
 var strings$1 = {
     LABEL_SELECTOR: '.mdc-form-field > label',
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -2883,6 +2811,7 @@ var MDCFormFieldFoundation = /** @class */ (function (_super) {
     };
     return MDCFormFieldFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -2962,6 +2891,60 @@ var MDCFormField = /** @class */ (function (_super) {
     };
     return MDCFormField;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
+
+function forwardEventsBuilder$1(component, additionalEvents = []) {
+  const events = [
+    'focus', 'blur',
+    'fullscreenchange', 'fullscreenerror', 'scroll',
+    'cut', 'copy', 'paste',
+    'keydown', 'keypress', 'keyup',
+    'auxclick', 'click', 'contextmenu', 'dblclick', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'mouseover', 'mouseout', 'mouseup', 'pointerlockchange', 'pointerlockerror', 'select', 'wheel',
+    'drag', 'dragend', 'dragenter', 'dragstart', 'dragleave', 'dragover', 'drop',
+    'touchcancel', 'touchend', 'touchmove', 'touchstart',
+    'pointerover', 'pointerenter', 'pointerdown', 'pointermove', 'pointerup', 'pointercancel', 'pointerout', 'pointerleave', 'gotpointercapture', 'lostpointercapture',
+    ...additionalEvents
+  ];
+
+  function forward(e) {
+    bubble(component, e);
+  }
+
+  return node => {
+    const destructors = [];
+
+    for (let i = 0; i < events.length; i++) {
+      destructors.push(listen(node, events[i], forward));
+    }
+
+    return {
+      destroy: () => {
+        for (let i = 0; i < destructors.length; i++) {
+          destructors[i]();
+        }
+      }
+    }
+  };
+}
+
+function exclude$1(obj, keys) {
+  let names = Object.getOwnPropertyNames(obj);
+  const newObj = {};
+
+  for (let i = 0; i < names.length; i++) {
+    const name = names[i];
+    const cashIndex = name.indexOf('$');
+    if (cashIndex !== -1 && keys.indexOf(name.substring(0, cashIndex + 1)) !== -1) {
+      continue;
+    }
+    if (keys.indexOf(name) !== -1) {
+      continue;
+    }
+    newObj[name] = obj[name];
+  }
+
+  return newObj;
+}
 
 function prefixFilter(obj, prefix) {
   let names = Object.getOwnPropertyNames(obj);
@@ -2975,6 +2958,51 @@ function prefixFilter(obj, prefix) {
   }
 
   return newObj;
+}
+
+function useActions$1(node, actions) {
+  let objects = [];
+
+  if (actions) {
+    for (let i = 0; i < actions.length; i++) {
+      const isArray = Array.isArray(actions[i]);
+      const action = isArray ? actions[i][0] : actions[i];
+      if (isArray && actions[i].length > 1) {
+        objects.push(action(node, actions[i][1]));
+      } else {
+        objects.push(action(node));
+      }
+    }
+  }
+
+  return {
+    update(actions) {
+      if ((actions && actions.length || 0) != objects.length) {
+        throw new Error('You must not change the length of an actions array.');
+      }
+
+      if (actions) {
+        for (let i = 0; i < actions.length; i++) {
+          if (objects[i] && 'update' in objects[i]) {
+            const isArray = Array.isArray(actions[i]);
+            if (isArray && actions[i].length > 1) {
+              objects[i].update(actions[i][1]);
+            } else {
+              objects[i].update();
+            }
+          }
+        }
+      }
+    },
+
+    destroy() {
+      for (let i = 0; i < objects.length; i++) {
+        if (objects[i] && 'destroy' in objects[i]) {
+          objects[i].destroy();
+        }
+      }
+    }
+  }
 }
 
 /* node_modules\@smui\form-field\FormField.svelte generated by Svelte v3.12.1 */
@@ -2995,7 +3023,7 @@ function create_fragment$3(ctx) {
 
 	var label_levels = [
 		{ for: ctx.inputId },
-		exclude(prefixFilter(ctx.$$props, 'label$'), ['use'])
+		exclude$1(prefixFilter(ctx.$$props, 'label$'), ['use'])
 	];
 
 	var label_data = {};
@@ -3004,8 +3032,8 @@ function create_fragment$3(ctx) {
 	}
 
 	var div_levels = [
-		{ class: "mdc-form-field " + ctx.className },
-		exclude(ctx.$$props, ['use', 'class', 'alignEnd', 'inputId', 'label$'])
+		{ class: "\n    mdc-form-field\n    " + ctx.className + "\n    " + (ctx.align === 'end' ? 'mdc-form-field--align-end' : '') + "\n  " },
+		exclude$1(ctx.$$props, ['use', 'class', 'alignEnd', 'inputId', 'label$'])
 	];
 
 	var div_data = {};
@@ -3024,9 +3052,8 @@ function create_fragment$3(ctx) {
 			if (label_slot) label_slot.c();
 
 			set_attributes(label, label_data);
-			add_location(label, file$3, 9, 2, 254);
+			add_location(label, file$3, 12, 2, 271);
 			set_attributes(div, div_data);
-			toggle_class(div, "mdc-form-field--align-end", ctx.align === 'end');
 			add_location(div, file$3, 0, 0, 0);
 		},
 
@@ -3051,9 +3078,9 @@ function create_fragment$3(ctx) {
 				label_slot.m(label, null);
 			}
 
-			useActions_action = useActions.call(null, label, ctx.label$use) || {};
+			useActions_action = useActions$1.call(null, label, ctx.label$use) || {};
 			ctx.div_binding(div);
-			useActions_action_1 = useActions.call(null, div, ctx.use) || {};
+			useActions_action_1 = useActions$1.call(null, div, ctx.use) || {};
 			forwardEvents_action = ctx.forwardEvents.call(null, div) || {};
 			current = true;
 		},
@@ -3075,7 +3102,7 @@ function create_fragment$3(ctx) {
 
 			set_attributes(label, get_spread_update(label_levels, [
 				(changed.inputId) && { for: ctx.inputId },
-				(changed.exclude || changed.prefixFilter || changed.$$props) && exclude(prefixFilter(ctx.$$props, 'label$'), ['use'])
+				(changed.exclude || changed.prefixFilter || changed.$$props) && exclude$1(prefixFilter(ctx.$$props, 'label$'), ['use'])
 			]));
 
 			if (typeof useActions_action.update === 'function' && changed.label$use) {
@@ -3083,16 +3110,12 @@ function create_fragment$3(ctx) {
 			}
 
 			set_attributes(div, get_spread_update(div_levels, [
-				(changed.className) && { class: "mdc-form-field " + ctx.className },
-				(changed.exclude || changed.$$props) && exclude(ctx.$$props, ['use', 'class', 'alignEnd', 'inputId', 'label$'])
+				(changed.className || changed.align) && { class: "\n    mdc-form-field\n    " + ctx.className + "\n    " + (ctx.align === 'end' ? 'mdc-form-field--align-end' : '') + "\n  " },
+				(changed.exclude || changed.$$props) && exclude$1(ctx.$$props, ['use', 'class', 'alignEnd', 'inputId', 'label$'])
 			]));
 
 			if (typeof useActions_action_1.update === 'function' && changed.use) {
 				useActions_action_1.update.call(null, ctx.use);
-			}
-
-			if ((changed.className || changed.align)) {
-				toggle_class(div, "mdc-form-field--align-end", ctx.align === 'end');
 			}
 		},
 
@@ -3132,7 +3155,7 @@ let counter = 0;
 function instance$3($$self, $$props, $$invalidate) {
 	
 
-  const forwardEvents = forwardEventsBuilder(current_component);
+  const forwardEvents = forwardEventsBuilder$1(current_component);
 
   let { use = [], class: className = '', align = 'start', inputId = 'SMUI-form-field-'+(counter++), label$use = [] } = $$props;
 
@@ -3147,9 +3170,7 @@ function instance$3($$self, $$props, $$invalidate) {
   });
 
   onDestroy(() => {
-    if (formField) {
-      formField && formField.destroy();
-    }
+    formField && formField.destroy();
   });
 
 	let { $$slots = {}, $$scope } = $$props;
@@ -3249,6 +3270,170 @@ class FormField extends SvelteComponentDev {
 	}
 }
 
+const subscriber_queue = [];
+/**
+ * Creates a `Readable` store that allows reading by subscription.
+ * @param value initial value
+ * @param {StartStopNotifier}start start and stop notifications for subscriptions
+ */
+function readable(value, start) {
+    return {
+        subscribe: writable(value, start).subscribe,
+    };
+}
+/**
+ * Create a `Writable` store that allows both updating and reading by subscription.
+ * @param {*=}value initial value
+ * @param {StartStopNotifier=}start start and stop notifications for subscriptions
+ */
+function writable(value, start = noop) {
+    let stop;
+    const subscribers = [];
+    function set(new_value) {
+        if (safe_not_equal(value, new_value)) {
+            value = new_value;
+            if (stop) { // store is ready
+                const run_queue = !subscriber_queue.length;
+                for (let i = 0; i < subscribers.length; i += 1) {
+                    const s = subscribers[i];
+                    s[1]();
+                    subscriber_queue.push(s, value);
+                }
+                if (run_queue) {
+                    for (let i = 0; i < subscriber_queue.length; i += 2) {
+                        subscriber_queue[i][0](subscriber_queue[i + 1]);
+                    }
+                    subscriber_queue.length = 0;
+                }
+            }
+        }
+    }
+    function update(fn) {
+        set(fn(value));
+    }
+    function subscribe(run, invalidate = noop) {
+        const subscriber = [run, invalidate];
+        subscribers.push(subscriber);
+        if (subscribers.length === 1) {
+            stop = start(set) || noop;
+        }
+        run(value);
+        return () => {
+            const index = subscribers.indexOf(subscriber);
+            if (index !== -1) {
+                subscribers.splice(index, 1);
+            }
+            if (subscribers.length === 0) {
+                stop();
+                stop = null;
+            }
+        };
+    }
+    return { set, update, subscribe };
+}
+/**
+ * Derived value store by synchronizing one or more readable stores and
+ * applying an aggregation function over its input values.
+ * @param {Stores} stores input stores
+ * @param {function(Stores=, function(*)=):*}fn function callback that aggregates the values
+ * @param {*=}initial_value when used asynchronously
+ */
+function derived(stores, fn, initial_value) {
+    const single = !Array.isArray(stores);
+    const stores_array = single
+        ? [stores]
+        : stores;
+    const auto = fn.length < 2;
+    return readable(initial_value, (set) => {
+        let inited = false;
+        const values = [];
+        let pending = 0;
+        let cleanup = noop;
+        const sync = () => {
+            if (pending) {
+                return;
+            }
+            cleanup();
+            const result = fn(single ? values[0] : values, set);
+            if (auto) {
+                set(result);
+            }
+            else {
+                cleanup = is_function(result) ? result : noop;
+            }
+        };
+        const unsubscribers = stores_array.map((store, i) => store.subscribe((value) => {
+            values[i] = value;
+            pending &= ~(1 << i);
+            if (inited) {
+                sync();
+            }
+        }, () => {
+            pending |= (1 << i);
+        }));
+        inited = true;
+        sync();
+        return function stop() {
+            run_all(unsubscribers);
+            cleanup();
+        };
+    });
+}
+
+const randColor = () => {
+  return `#${
+    Math.floor(Math.random() * 105 + 150).toString(16).padStart(2, '0') +
+    Math.floor(Math.random() * 105 + 150).toString(16).padStart(2, '0') +
+    Math.floor(Math.random() * 105 + 150).toString(16).padStart(2, '0')}
+  `;
+};
+
+const createWindows = () => {
+  const { subscribe, set, update } = writable([]);
+
+  return {
+    subscribe,
+    clear() { set(0); },
+    createNew(index) {
+      update(n => {
+        n.splice(index, 0, {
+          name: 'new window',
+          color: randColor(),
+          frameCount: 8
+        });
+        return n;
+      });
+    },
+    remove(index) {
+      update(n => {
+        n.splice(index, 1);
+        return n;
+      });
+    }
+  }
+};
+const windows = createWindows();
+const frameCount = derived(
+  windows,
+  $windows => {
+    return $windows.reduce((acc, win, i) => {
+      return acc + win.frameCount;
+    }, 0)
+  }
+);
+const windowPositions = derived(
+  windows,
+  $windows => {
+    let out = [];
+    let tracker = 0;
+    for (const win of $windows) {
+      out.push(tracker);
+      tracker += win.frameCount;
+    }
+    return out;
+  }
+);
+
 /**
  * @license
  * Copyright 2016 Google Inc.
@@ -3297,6 +3482,7 @@ function getCorrectPropertyName(windowObj, cssProperty) {
     }
     return cssProperty;
 }
+//# sourceMappingURL=util.js.map
 
 /**
  * @license
@@ -3329,6 +3515,7 @@ var strings$2 = {
     BUFFER_SELECTOR: '.mdc-linear-progress__buffer',
     PRIMARY_BAR_SELECTOR: '.mdc-linear-progress__primary-bar',
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -3437,6 +3624,7 @@ var MDCLinearProgressFoundation = /** @class */ (function (_super) {
     };
     return MDCLinearProgressFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -3518,6 +3706,7 @@ var MDCLinearProgress = /** @class */ (function (_super) {
     };
     return MDCLinearProgress;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\linear-progress\LinearProgress.svelte generated by Svelte v3.12.1 */
 
@@ -3527,7 +3716,7 @@ function create_fragment$4(ctx) {
 	var div4, div0, t0, div1, t1, div2, span0, t2, div3, span1, useActions_action, forwardEvents_action;
 
 	var div4_levels = [
-		{ class: "mdc-linear-progress " + ctx.className },
+		{ class: "\n    mdc-linear-progress\n    " + ctx.className + "\n    " + (ctx.indeterminate ? 'mdc-linear-progress--indeterminate' : '') + "\n    " + (ctx.reversed ? 'mdc-linear-progress--reversed' : '') + "\n    " + (ctx.closed ? 'mdc-linear-progress--closed' : '') + "\n  " },
 		{ role: "progressbar" },
 		exclude(ctx.$$props, ['use', 'class', 'indeterminate', 'reversed', 'closed', 'progress'])
 	];
@@ -3550,21 +3739,18 @@ function create_fragment$4(ctx) {
 			div3 = element("div");
 			span1 = element("span");
 			attr_dev(div0, "class", "mdc-linear-progress__buffering-dots");
-			add_location(div0, file$4, 11, 2, 383);
+			add_location(div0, file$4, 14, 2, 410);
 			attr_dev(div1, "class", "mdc-linear-progress__buffer");
-			add_location(div1, file$4, 12, 2, 441);
+			add_location(div1, file$4, 15, 2, 468);
 			attr_dev(span0, "class", "mdc-linear-progress__bar-inner");
-			add_location(span0, file$4, 14, 4, 567);
+			add_location(span0, file$4, 17, 4, 594);
 			attr_dev(div2, "class", "mdc-linear-progress__bar mdc-linear-progress__primary-bar");
-			add_location(div2, file$4, 13, 2, 491);
+			add_location(div2, file$4, 16, 2, 518);
 			attr_dev(span1, "class", "mdc-linear-progress__bar-inner");
-			add_location(span1, file$4, 17, 4, 709);
+			add_location(span1, file$4, 20, 4, 736);
 			attr_dev(div3, "class", "mdc-linear-progress__bar mdc-linear-progress__secondary-bar");
-			add_location(div3, file$4, 16, 2, 631);
+			add_location(div3, file$4, 19, 2, 658);
 			set_attributes(div4, div4_data);
-			toggle_class(div4, "mdc-linear-progress--indeterminate", ctx.indeterminate);
-			toggle_class(div4, "mdc-linear-progress--reversed", ctx.reversed);
-			toggle_class(div4, "mdc-linear-progress--closed", ctx.closed);
 			add_location(div4, file$4, 0, 0, 0);
 		},
 
@@ -3590,25 +3776,13 @@ function create_fragment$4(ctx) {
 
 		p: function update(changed, ctx) {
 			set_attributes(div4, get_spread_update(div4_levels, [
-				(changed.className) && { class: "mdc-linear-progress " + ctx.className },
+				(changed.className || changed.indeterminate || changed.reversed || changed.closed) && { class: "\n    mdc-linear-progress\n    " + ctx.className + "\n    " + (ctx.indeterminate ? 'mdc-linear-progress--indeterminate' : '') + "\n    " + (ctx.reversed ? 'mdc-linear-progress--reversed' : '') + "\n    " + (ctx.closed ? 'mdc-linear-progress--closed' : '') + "\n  " },
 				{ role: "progressbar" },
 				(changed.exclude || changed.$$props) && exclude(ctx.$$props, ['use', 'class', 'indeterminate', 'reversed', 'closed', 'progress'])
 			]));
 
 			if (typeof useActions_action.update === 'function' && changed.use) {
 				useActions_action.update.call(null, ctx.use);
-			}
-
-			if ((changed.className || changed.indeterminate)) {
-				toggle_class(div4, "mdc-linear-progress--indeterminate", ctx.indeterminate);
-			}
-
-			if ((changed.className || changed.reversed)) {
-				toggle_class(div4, "mdc-linear-progress--reversed", ctx.reversed);
-			}
-
-			if ((changed.className || changed.closed)) {
-				toggle_class(div4, "mdc-linear-progress--closed", ctx.closed);
 			}
 		},
 
@@ -3783,61 +3957,10 @@ class LinearProgress extends SvelteComponentDev {
 	}
 }
 
-const subscriber_queue = [];
-/**
- * Create a `Writable` store that allows both updating and reading by subscription.
- * @param {*=}value initial value
- * @param {StartStopNotifier=}start start and stop notifications for subscriptions
- */
-function writable(value, start = noop) {
-    let stop;
-    const subscribers = [];
-    function set(new_value) {
-        if (safe_not_equal(value, new_value)) {
-            value = new_value;
-            if (stop) { // store is ready
-                const run_queue = !subscriber_queue.length;
-                for (let i = 0; i < subscribers.length; i += 1) {
-                    const s = subscribers[i];
-                    s[1]();
-                    subscriber_queue.push(s, value);
-                }
-                if (run_queue) {
-                    for (let i = 0; i < subscriber_queue.length; i += 2) {
-                        subscriber_queue[i][0](subscriber_queue[i + 1]);
-                    }
-                    subscriber_queue.length = 0;
-                }
-            }
-        }
-    }
-    function update(fn) {
-        set(fn(value));
-    }
-    function subscribe(run, invalidate = noop) {
-        const subscriber = [run, invalidate];
-        subscribers.push(subscriber);
-        if (subscribers.length === 1) {
-            stop = start(set) || noop;
-        }
-        run(value);
-        return () => {
-            const index = subscribers.indexOf(subscriber);
-            if (index !== -1) {
-                subscribers.splice(index, 1);
-            }
-            if (subscribers.length === 0) {
-                stop();
-                stop = null;
-            }
-        };
-    }
-    return { set, update, subscribe };
-}
-
 const spritesheet = writable({});
 
-const frameCount = writable(1);
+const frameCount$1 = writable(1);
+const currentFrame = writable(0);
 
 /**
  * @license
@@ -3866,6 +3989,7 @@ var cssClasses$3 = {
     LABEL_SHAKE: 'mdc-floating-label--shake',
     ROOT: 'mdc-floating-label',
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -3966,6 +4090,7 @@ var MDCFloatingLabelFoundation = /** @class */ (function (_super) {
     };
     return MDCFloatingLabelFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -4031,6 +4156,7 @@ var MDCFloatingLabel = /** @class */ (function (_super) {
     };
     return MDCFloatingLabel;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -4058,6 +4184,7 @@ var cssClasses$4 = {
     LINE_RIPPLE_ACTIVE: 'mdc-line-ripple--active',
     LINE_RIPPLE_DEACTIVATING: 'mdc-line-ripple--deactivating',
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -4143,6 +4270,7 @@ var MDCLineRippleFoundation = /** @class */ (function (_super) {
     };
     return MDCLineRippleFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -4211,6 +4339,7 @@ var MDCLineRipple = /** @class */ (function (_super) {
     };
     return MDCLineRipple;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -4246,6 +4375,7 @@ var cssClasses$5 = {
     OUTLINE_NOTCHED: 'mdc-notched-outline--notched',
     OUTLINE_UPGRADED: 'mdc-notched-outline--upgraded',
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -4333,6 +4463,7 @@ var MDCNotchedOutlineFoundation = /** @class */ (function (_super) {
     };
     return MDCNotchedOutlineFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -4407,6 +4538,7 @@ var MDCNotchedOutline = /** @class */ (function (_super) {
     };
     return MDCNotchedOutline;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -4436,6 +4568,7 @@ var cssClasses$6 = {
 var strings$4 = {
     ROOT_SELECTOR: "." + cssClasses$6.ROOT,
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -4496,6 +4629,7 @@ var MDCTextFieldCharacterCounterFoundation = /** @class */ (function (_super) {
     };
     return MDCTextFieldCharacterCounterFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -4547,6 +4681,7 @@ var MDCTextFieldCharacterCounter = /** @class */ (function (_super) {
     };
     return MDCTextFieldCharacterCounter;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -4609,6 +4744,7 @@ var VALIDATION_ATTR_WHITELIST = [
 var ALWAYS_FLOAT_TYPES = [
     'color', 'date', 'datetime-local', 'month', 'range', 'time', 'week',
 ];
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -5063,6 +5199,7 @@ var MDCTextFieldFoundation = /** @class */ (function (_super) {
     };
     return MDCTextFieldFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -5096,6 +5233,7 @@ var strings$6 = {
     ROLE: 'role',
     ROOT_SELECTOR: "." + cssClasses$8.ROOT,
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -5216,6 +5354,7 @@ var MDCTextFieldHelperTextFoundation = /** @class */ (function (_super) {
     };
     return MDCTextFieldHelperTextFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -5274,6 +5413,7 @@ var MDCTextFieldHelperText = /** @class */ (function (_super) {
     };
     return MDCTextFieldHelperText;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -5304,6 +5444,7 @@ var strings$7 = {
 var cssClasses$9 = {
     ROOT: 'mdc-text-field__icon',
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -5410,6 +5551,7 @@ var MDCTextFieldIconFoundation = /** @class */ (function (_super) {
     };
     return MDCTextFieldIconFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -5469,6 +5611,7 @@ var MDCTextFieldIcon = /** @class */ (function (_super) {
     };
     return MDCTextFieldIcon;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -5905,6 +6048,21 @@ var MDCTextField = /** @class */ (function (_super) {
     };
     return MDCTextField;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
+
+function prefixFilter$1(obj, prefix) {
+  let names = Object.getOwnPropertyNames(obj);
+  const newObj = {};
+
+  for (let i = 0; i < names.length; i++) {
+    const name = names[i];
+    if (name.substring(0, prefix.length) === prefix) {
+      newObj[name.substring(prefix.length)] = obj[name];
+    }
+  }
+
+  return newObj;
+}
 
 /* node_modules\@smui\floating-label\FloatingLabel.svelte generated by Svelte v3.12.1 */
 
@@ -5919,7 +6077,7 @@ function create_else_block$1(ctx) {
 
 	var label_levels = [
 		{ class: "mdc-floating-label " + ctx.className },
-		ctx.forProp,
+		((ctx.forId || ctx.inputProps && ctx.inputProps.id) ? {'for': ctx.forId || ctx.inputProps && ctx.inputProps.id} : {}),
 		exclude(ctx.$$props, ['use', 'class', 'for', 'wrapped'])
 	];
 
@@ -5965,7 +6123,7 @@ function create_else_block$1(ctx) {
 
 			set_attributes(label, get_spread_update(label_levels, [
 				(changed.className) && { class: "mdc-floating-label " + ctx.className },
-				(changed.forProp) && ctx.forProp,
+				(changed.forId || changed.inputProps) && ((ctx.forId || ctx.inputProps && ctx.inputProps.id) ? {'for': ctx.forId || ctx.inputProps && ctx.inputProps.id} : {}),
 				(changed.exclude || changed.$$props) && exclude(ctx.$$props, ['use', 'class', 'for', 'wrapped'])
 			]));
 
@@ -6222,7 +6380,7 @@ function instance$5($$self, $$props, $$invalidate) {
 	};
 
 	$$self.$capture_state = () => {
-		return { use, className, forId, wrapped, element, floatingLabel, inputProps, forProp };
+		return { use, className, forId, wrapped, element, floatingLabel, inputProps };
 	};
 
 	$$self.$inject_state = $$new_props => {
@@ -6234,13 +6392,6 @@ function instance$5($$self, $$props, $$invalidate) {
 		if ('element' in $$props) $$invalidate('element', element = $$new_props.element);
 		if ('floatingLabel' in $$props) floatingLabel = $$new_props.floatingLabel;
 		if ('inputProps' in $$props) $$invalidate('inputProps', inputProps = $$new_props.inputProps);
-		if ('forProp' in $$props) $$invalidate('forProp', forProp = $$new_props.forProp);
-	};
-
-	let forProp;
-
-	$$self.$$.update = ($$dirty = { forId: 1, inputProps: 1 }) => {
-		if ($$dirty.forId || $$dirty.inputProps) { $$invalidate('forProp', forProp = (forId || inputProps && inputProps.id) ? {for: forId || inputProps && inputProps.id} : {}); }
 	};
 
 	return {
@@ -6250,10 +6401,10 @@ function instance$5($$self, $$props, $$invalidate) {
 		forId,
 		wrapped,
 		element,
+		inputProps,
 		shake,
 		float,
 		getWidth,
-		forProp,
 		$$props,
 		span_binding,
 		label_binding,
@@ -6347,7 +6498,7 @@ function create_fragment$6(ctx) {
 	var div, useActions_action, forwardEvents_action;
 
 	var div_levels = [
-		{ class: "mdc-line-ripple " + ctx.className },
+		{ class: "\n    mdc-line-ripple\n    " + ctx.className + "\n    " + (ctx.active ? 'mdc-line-ripple--active' : '') + "\n  " },
 		exclude(ctx.$$props, ['use', 'class', 'active'])
 	];
 
@@ -6360,7 +6511,6 @@ function create_fragment$6(ctx) {
 		c: function create() {
 			div = element("div");
 			set_attributes(div, div_data);
-			toggle_class(div, "mdc-line-ripple--active", ctx.active);
 			add_location(div, file$6, 0, 0, 0);
 		},
 
@@ -6377,16 +6527,12 @@ function create_fragment$6(ctx) {
 
 		p: function update(changed, ctx) {
 			set_attributes(div, get_spread_update(div_levels, [
-				(changed.className) && { class: "mdc-line-ripple " + ctx.className },
+				(changed.className || changed.active) && { class: "\n    mdc-line-ripple\n    " + ctx.className + "\n    " + (ctx.active ? 'mdc-line-ripple--active' : '') + "\n  " },
 				(changed.exclude || changed.$$props) && exclude(ctx.$$props, ['use', 'class', 'active'])
 			]));
 
 			if (typeof useActions_action.update === 'function' && changed.use) {
 				useActions_action.update.call(null, ctx.use);
-			}
-
-			if ((changed.className || changed.active)) {
-				toggle_class(div, "mdc-line-ripple--active", ctx.active);
 			}
 		},
 
@@ -6550,7 +6696,7 @@ class LineRipple extends SvelteComponentDev {
 
 const file$7 = "node_modules\\@smui\\notched-outline\\NotchedOutline.svelte";
 
-// (11:2) {#if !noLabel}
+// (14:2) {#if !noLabel}
 function create_if_block$2(ctx) {
 	var div, current;
 
@@ -6564,7 +6710,7 @@ function create_if_block$2(ctx) {
 			if (default_slot) default_slot.c();
 
 			attr_dev(div, "class", "mdc-notched-outline__notch");
-			add_location(div, file$7, 11, 4, 345);
+			add_location(div, file$7, 14, 4, 367);
 		},
 
 		l: function claim(nodes) {
@@ -6609,7 +6755,7 @@ function create_if_block$2(ctx) {
 			if (default_slot) default_slot.d(detaching);
 		}
 	};
-	dispatch_dev("SvelteRegisterBlock", { block, id: create_if_block$2.name, type: "if", source: "(11:2) {#if !noLabel}", ctx });
+	dispatch_dev("SvelteRegisterBlock", { block, id: create_if_block$2.name, type: "if", source: "(14:2) {#if !noLabel}", ctx });
 	return block;
 }
 
@@ -6619,7 +6765,7 @@ function create_fragment$7(ctx) {
 	var if_block = (!ctx.noLabel) && create_if_block$2(ctx);
 
 	var div2_levels = [
-		{ class: "mdc-notched-outline " + ctx.className },
+		{ class: "\n    mdc-notched-outline\n    " + ctx.className + "\n    " + (ctx.notched ? 'mdc-notched-outline--notched' : '') + "\n    " + (ctx.noLabel ? 'mdc-notched-outline--no-label' : '') + "\n  " },
 		exclude(ctx.$$props, ['use', 'class', 'notched', 'noLabel'])
 	];
 
@@ -6637,12 +6783,10 @@ function create_fragment$7(ctx) {
 			t1 = space();
 			div1 = element("div");
 			attr_dev(div0, "class", "mdc-notched-outline__leading");
-			add_location(div0, file$7, 9, 2, 275);
+			add_location(div0, file$7, 12, 2, 297);
 			attr_dev(div1, "class", "mdc-notched-outline__trailing");
-			add_location(div1, file$7, 13, 2, 415);
+			add_location(div1, file$7, 16, 2, 437);
 			set_attributes(div2, div2_data);
-			toggle_class(div2, "mdc-notched-outline--notched", ctx.notched);
-			toggle_class(div2, "mdc-notched-outline--no-label", ctx.noLabel);
 			add_location(div2, file$7, 0, 0, 0);
 		},
 
@@ -6683,20 +6827,12 @@ function create_fragment$7(ctx) {
 			}
 
 			set_attributes(div2, get_spread_update(div2_levels, [
-				(changed.className) && { class: "mdc-notched-outline " + ctx.className },
+				(changed.className || changed.notched || changed.noLabel) && { class: "\n    mdc-notched-outline\n    " + ctx.className + "\n    " + (ctx.notched ? 'mdc-notched-outline--notched' : '') + "\n    " + (ctx.noLabel ? 'mdc-notched-outline--no-label' : '') + "\n  " },
 				(changed.exclude || changed.$$props) && exclude(ctx.$$props, ['use', 'class', 'notched', 'noLabel'])
 			]));
 
 			if (typeof useActions_action.update === 'function' && changed.use) {
 				useActions_action.update.call(null, ctx.use);
-			}
-
-			if ((changed.className || changed.notched)) {
-				toggle_class(div2, "mdc-notched-outline--notched", ctx.notched);
-			}
-
-			if ((changed.className || changed.noLabel)) {
-				toggle_class(div2, "mdc-notched-outline--no-label", ctx.noLabel);
 			}
 		},
 
@@ -6940,7 +7076,12 @@ function create_fragment$8(ctx) {
 }
 
 function toNumber(value) {
-  return value === '' ? undefined : +value;
+  if (value === '') {
+    const nan = new Number(Number.NaN);
+    nan.length = 0;
+    return nan;
+  }
+  return +value;
 }
 
 function instance$8($$self, $$props, $$invalidate) {
@@ -7025,7 +7166,7 @@ function instance$8($$self, $$props, $$invalidate) {
 		if ($$dirty.type || $$dirty.valueProp || $$dirty.value) { if (type === 'file') {
         delete valueProp.value;
       } else {
-        $$invalidate('valueProp', valueProp.value = value, valueProp);
+        $$invalidate('valueProp', valueProp.value = value === undefined ? '' : value, valueProp);
       } }
 	};
 
@@ -7338,7 +7479,7 @@ const get_label_slot_context_1 = () => ({});
 const get_label_slot_changes$1 = () => ({});
 const get_label_slot_context$1 = () => ({});
 
-// (61:0) {:else}
+// (65:0) {:else}
 function create_else_block_1(ctx) {
 	var div, useActions_action, forwardEvents_action, current;
 
@@ -7346,7 +7487,7 @@ function create_else_block_1(ctx) {
 	const default_slot = create_slot(default_slot_template, ctx, null);
 
 	var div_levels = [
-		{ class: "mdc-text-field " + ctx.className },
+		{ class: "\n      mdc-text-field\n      " + ctx.className + "\n      " + (ctx.disabled ? 'mdc-text-field--disabled' : '') + "\n      " + (ctx.fullwidth ? 'mdc-text-field--fullwidth' : '') + "\n      " + (ctx.textarea ? 'mdc-text-field--textarea' : '') + "\n      " + ((ctx.variant === 'outlined' && !ctx.fullwidth) ? 'mdc-text-field--outlined' : '') + "\n      " + ((ctx.variant === 'standard' && !ctx.fullwidth && !ctx.textarea) ? 'smui-text-field--standard' : '') + "\n      " + (ctx.dense ? 'mdc-text-field--dense' : '') + "\n      " + (ctx.noLabel ? 'mdc-text-field--no-label' : '') + "\n      " + (ctx.withLeadingIcon ? 'mdc-text-field--with-leading-icon' : '') + "\n      " + (ctx.withTrailingIcon ? 'mdc-text-field--with-trailing-icon' : '') + "\n      " + (ctx.invalid ? 'mdc-text-field--invalid' : '') + "\n    " },
 		ctx.props
 	];
 
@@ -7362,17 +7503,7 @@ function create_else_block_1(ctx) {
 			if (default_slot) default_slot.c();
 
 			set_attributes(div, div_data);
-			toggle_class(div, "mdc-text-field--disabled", ctx.disabled);
-			toggle_class(div, "mdc-text-field--fullwidth", ctx.fullwidth);
-			toggle_class(div, "mdc-text-field--textarea", ctx.textarea);
-			toggle_class(div, "mdc-text-field--outlined", ctx.variant === 'outlined' && !ctx.fullwidth);
-			toggle_class(div, "smui-text-field--standard", ctx.variant === 'standard' && !ctx.fullwidth && !ctx.textarea);
-			toggle_class(div, "mdc-text-field--dense", ctx.dense);
-			toggle_class(div, "mdc-text-field--no-label", ctx.noLabel);
-			toggle_class(div, "mdc-text-field--with-leading-icon", ctx.withLeadingIcon);
-			toggle_class(div, "mdc-text-field--with-trailing-icon", ctx.withTrailingIcon);
-			toggle_class(div, "mdc-text-field--invalid", ctx.invalid);
-			add_location(div, file$a, 61, 2, 1956);
+			add_location(div, file$a, 65, 2, 2082);
 		},
 
 		l: function claim(nodes) {
@@ -7401,52 +7532,12 @@ function create_else_block_1(ctx) {
 			}
 
 			set_attributes(div, get_spread_update(div_levels, [
-				(changed.className) && { class: "mdc-text-field " + ctx.className },
+				(changed.className || changed.disabled || changed.fullwidth || changed.textarea || changed.variant || changed.dense || changed.noLabel || changed.withLeadingIcon || changed.withTrailingIcon || changed.invalid) && { class: "\n      mdc-text-field\n      " + ctx.className + "\n      " + (ctx.disabled ? 'mdc-text-field--disabled' : '') + "\n      " + (ctx.fullwidth ? 'mdc-text-field--fullwidth' : '') + "\n      " + (ctx.textarea ? 'mdc-text-field--textarea' : '') + "\n      " + ((ctx.variant === 'outlined' && !ctx.fullwidth) ? 'mdc-text-field--outlined' : '') + "\n      " + ((ctx.variant === 'standard' && !ctx.fullwidth && !ctx.textarea) ? 'smui-text-field--standard' : '') + "\n      " + (ctx.dense ? 'mdc-text-field--dense' : '') + "\n      " + (ctx.noLabel ? 'mdc-text-field--no-label' : '') + "\n      " + (ctx.withLeadingIcon ? 'mdc-text-field--with-leading-icon' : '') + "\n      " + (ctx.withTrailingIcon ? 'mdc-text-field--with-trailing-icon' : '') + "\n      " + (ctx.invalid ? 'mdc-text-field--invalid' : '') + "\n    " },
 				(changed.props) && ctx.props
 			]));
 
 			if (typeof useActions_action.update === 'function' && changed.use) {
 				useActions_action.update.call(null, ctx.use);
-			}
-
-			if ((changed.className || changed.disabled)) {
-				toggle_class(div, "mdc-text-field--disabled", ctx.disabled);
-			}
-
-			if ((changed.className || changed.fullwidth)) {
-				toggle_class(div, "mdc-text-field--fullwidth", ctx.fullwidth);
-			}
-
-			if ((changed.className || changed.textarea)) {
-				toggle_class(div, "mdc-text-field--textarea", ctx.textarea);
-			}
-
-			if ((changed.className || changed.variant || changed.fullwidth)) {
-				toggle_class(div, "mdc-text-field--outlined", ctx.variant === 'outlined' && !ctx.fullwidth);
-			}
-
-			if ((changed.className || changed.variant || changed.fullwidth || changed.textarea)) {
-				toggle_class(div, "smui-text-field--standard", ctx.variant === 'standard' && !ctx.fullwidth && !ctx.textarea);
-			}
-
-			if ((changed.className || changed.dense)) {
-				toggle_class(div, "mdc-text-field--dense", ctx.dense);
-			}
-
-			if ((changed.className || changed.noLabel)) {
-				toggle_class(div, "mdc-text-field--no-label", ctx.noLabel);
-			}
-
-			if ((changed.className || changed.withLeadingIcon)) {
-				toggle_class(div, "mdc-text-field--with-leading-icon", ctx.withLeadingIcon);
-			}
-
-			if ((changed.className || changed.withTrailingIcon)) {
-				toggle_class(div, "mdc-text-field--with-trailing-icon", ctx.withTrailingIcon);
-			}
-
-			if ((changed.className || changed.invalid)) {
-				toggle_class(div, "mdc-text-field--invalid", ctx.invalid);
 			}
 		},
 
@@ -7472,7 +7563,7 @@ function create_else_block_1(ctx) {
 			if (forwardEvents_action && typeof forwardEvents_action.destroy === 'function') forwardEvents_action.destroy();
 		}
 	};
-	dispatch_dev("SvelteRegisterBlock", { block, id: create_else_block_1.name, type: "else", source: "(61:0) {:else}", ctx });
+	dispatch_dev("SvelteRegisterBlock", { block, id: create_else_block_1.name, type: "else", source: "(65:0) {:else}", ctx });
 	return block;
 }
 
@@ -7503,7 +7594,7 @@ function create_if_block$3(ctx) {
 	var if_block2 = (ctx.textarea || (ctx.variant === 'outlined' && !ctx.fullwidth)) && create_if_block_1(ctx);
 
 	var label_1_levels = [
-		{ class: "mdc-text-field " + ctx.className },
+		{ class: "\n      mdc-text-field\n      " + ctx.className + "\n      " + (ctx.disabled ? 'mdc-text-field--disabled' : '') + "\n      " + (ctx.fullwidth ? 'mdc-text-field--fullwidth' : '') + "\n      " + (ctx.textarea ? 'mdc-text-field--textarea' : '') + "\n      " + ((ctx.variant === 'outlined' && !ctx.fullwidth) ? 'mdc-text-field--outlined' : '') + "\n      " + ((ctx.variant === 'standard' && !ctx.fullwidth && !ctx.textarea) ? 'smui-text-field--standard' : '') + "\n      " + (ctx.dense ? 'mdc-text-field--dense' : '') + "\n      " + (ctx.noLabel || ctx.label == null ? 'mdc-text-field--no-label' : '') + "\n      " + (ctx.withLeadingIcon ? 'mdc-text-field--with-leading-icon' : '') + "\n      " + (ctx.withTrailingIcon ? 'mdc-text-field--with-trailing-icon' : '') + "\n      " + (ctx.invalid ? 'mdc-text-field--invalid' : '') + "\n    " },
 		ctx.props
 	];
 
@@ -7525,16 +7616,6 @@ function create_if_block$3(ctx) {
 			if (if_block2) if_block2.c();
 
 			set_attributes(label_1, label_1_data);
-			toggle_class(label_1, "mdc-text-field--disabled", ctx.disabled);
-			toggle_class(label_1, "mdc-text-field--fullwidth", ctx.fullwidth);
-			toggle_class(label_1, "mdc-text-field--textarea", ctx.textarea);
-			toggle_class(label_1, "mdc-text-field--outlined", ctx.variant === 'outlined' && !ctx.fullwidth);
-			toggle_class(label_1, "smui-text-field--standard", ctx.variant === 'standard' && !ctx.fullwidth && !ctx.textarea);
-			toggle_class(label_1, "mdc-text-field--dense", ctx.dense);
-			toggle_class(label_1, "mdc-text-field--no-label", ctx.noLabel || ctx.label == null);
-			toggle_class(label_1, "mdc-text-field--with-leading-icon", ctx.withLeadingIcon);
-			toggle_class(label_1, "mdc-text-field--with-trailing-icon", ctx.withTrailingIcon);
-			toggle_class(label_1, "mdc-text-field--invalid", ctx.invalid);
 			add_location(label_1, file$a, 1, 2, 15);
 		},
 
@@ -7626,52 +7707,12 @@ function create_if_block$3(ctx) {
 			}
 
 			set_attributes(label_1, get_spread_update(label_1_levels, [
-				(changed.className) && { class: "mdc-text-field " + ctx.className },
+				(changed.className || changed.disabled || changed.fullwidth || changed.textarea || changed.variant || changed.dense || changed.noLabel || changed.label || changed.withLeadingIcon || changed.withTrailingIcon || changed.invalid) && { class: "\n      mdc-text-field\n      " + ctx.className + "\n      " + (ctx.disabled ? 'mdc-text-field--disabled' : '') + "\n      " + (ctx.fullwidth ? 'mdc-text-field--fullwidth' : '') + "\n      " + (ctx.textarea ? 'mdc-text-field--textarea' : '') + "\n      " + ((ctx.variant === 'outlined' && !ctx.fullwidth) ? 'mdc-text-field--outlined' : '') + "\n      " + ((ctx.variant === 'standard' && !ctx.fullwidth && !ctx.textarea) ? 'smui-text-field--standard' : '') + "\n      " + (ctx.dense ? 'mdc-text-field--dense' : '') + "\n      " + (ctx.noLabel || ctx.label == null ? 'mdc-text-field--no-label' : '') + "\n      " + (ctx.withLeadingIcon ? 'mdc-text-field--with-leading-icon' : '') + "\n      " + (ctx.withTrailingIcon ? 'mdc-text-field--with-trailing-icon' : '') + "\n      " + (ctx.invalid ? 'mdc-text-field--invalid' : '') + "\n    " },
 				(changed.props) && ctx.props
 			]));
 
 			if (typeof useActions_action.update === 'function' && changed.use) {
 				useActions_action.update.call(null, ctx.use);
-			}
-
-			if ((changed.className || changed.disabled)) {
-				toggle_class(label_1, "mdc-text-field--disabled", ctx.disabled);
-			}
-
-			if ((changed.className || changed.fullwidth)) {
-				toggle_class(label_1, "mdc-text-field--fullwidth", ctx.fullwidth);
-			}
-
-			if ((changed.className || changed.textarea)) {
-				toggle_class(label_1, "mdc-text-field--textarea", ctx.textarea);
-			}
-
-			if ((changed.className || changed.variant || changed.fullwidth)) {
-				toggle_class(label_1, "mdc-text-field--outlined", ctx.variant === 'outlined' && !ctx.fullwidth);
-			}
-
-			if ((changed.className || changed.variant || changed.fullwidth || changed.textarea)) {
-				toggle_class(label_1, "smui-text-field--standard", ctx.variant === 'standard' && !ctx.fullwidth && !ctx.textarea);
-			}
-
-			if ((changed.className || changed.dense)) {
-				toggle_class(label_1, "mdc-text-field--dense", ctx.dense);
-			}
-
-			if ((changed.className || changed.noLabel || changed.label)) {
-				toggle_class(label_1, "mdc-text-field--no-label", ctx.noLabel || ctx.label == null);
-			}
-
-			if ((changed.className || changed.withLeadingIcon)) {
-				toggle_class(label_1, "mdc-text-field--with-leading-icon", ctx.withLeadingIcon);
-			}
-
-			if ((changed.className || changed.withTrailingIcon)) {
-				toggle_class(label_1, "mdc-text-field--with-trailing-icon", ctx.withTrailingIcon);
-			}
-
-			if ((changed.className || changed.invalid)) {
-				toggle_class(label_1, "mdc-text-field--invalid", ctx.invalid);
 			}
 		},
 
@@ -7710,16 +7751,16 @@ function create_if_block$3(ctx) {
 	return block;
 }
 
-// (31:4) {:else}
+// (34:4) {:else}
 function create_else_block$2(ctx) {
-	var updating_value, updating_dirty, updating_invalid, current;
+	var updating_value, updating_files, updating_dirty, updating_invalid, current;
 
 	var input_spread_levels = [
 		{ type: ctx.type },
 		{ disabled: ctx.disabled },
 		{ updateInvalid: ctx.updateInvalid },
-		ctx.placeholderProp,
-		prefixFilter(ctx.$$props, 'input$')
+		((ctx.fullwidth && ctx.label) ? {placeholder: ctx.label} : {}),
+		prefixFilter$1(ctx.$$props, 'input$')
 	];
 
 	function input_value_binding(value_1) {
@@ -7728,14 +7769,20 @@ function create_else_block$2(ctx) {
 		add_flush_callback(() => updating_value = false);
 	}
 
-	function input_dirty_binding(value_2) {
-		ctx.input_dirty_binding.call(null, value_2);
+	function input_files_binding(value_2) {
+		ctx.input_files_binding.call(null, value_2);
+		updating_files = true;
+		add_flush_callback(() => updating_files = false);
+	}
+
+	function input_dirty_binding(value_3) {
+		ctx.input_dirty_binding.call(null, value_3);
 		updating_dirty = true;
 		add_flush_callback(() => updating_dirty = false);
 	}
 
-	function input_invalid_binding(value_3) {
-		ctx.input_invalid_binding.call(null, value_3);
+	function input_invalid_binding(value_4) {
+		ctx.input_invalid_binding.call(null, value_4);
 		updating_invalid = true;
 		add_flush_callback(() => updating_invalid = false);
 	}
@@ -7747,6 +7794,9 @@ function create_else_block$2(ctx) {
 	if (ctx.value !== void 0) {
 		input_props.value = ctx.value;
 	}
+	if (ctx.files !== void 0) {
+		input_props.files = ctx.files;
+	}
 	if (ctx.dirty !== void 0) {
 		input_props.dirty = ctx.dirty;
 	}
@@ -7756,6 +7806,7 @@ function create_else_block$2(ctx) {
 	var input = new Input({ props: input_props, $$inline: true });
 
 	binding_callbacks.push(() => bind(input, 'value', input_value_binding));
+	binding_callbacks.push(() => bind(input, 'files', input_files_binding));
 	binding_callbacks.push(() => bind(input, 'dirty', input_dirty_binding));
 	binding_callbacks.push(() => bind(input, 'invalid', input_invalid_binding));
 	input.$on("change", ctx.change_handler_1);
@@ -7772,15 +7823,18 @@ function create_else_block$2(ctx) {
 		},
 
 		p: function update(changed, ctx) {
-			var input_changes = (changed.type || changed.disabled || changed.updateInvalid || changed.placeholderProp || changed.prefixFilter || changed.$$props) ? get_spread_update(input_spread_levels, [
+			var input_changes = (changed.type || changed.disabled || changed.updateInvalid || changed.fullwidth || changed.label || changed.prefixFilter || changed.$$props) ? get_spread_update(input_spread_levels, [
 									(changed.type) && { type: ctx.type },
 			(changed.disabled) && { disabled: ctx.disabled },
 			(changed.updateInvalid) && { updateInvalid: ctx.updateInvalid },
-			(changed.placeholderProp) && get_spread_object(ctx.placeholderProp),
-			(changed.prefixFilter || changed.$$props) && get_spread_object(prefixFilter(ctx.$$props, 'input$'))
+			(changed.fullwidth || changed.label) && get_spread_object(((ctx.fullwidth && ctx.label) ? {placeholder: ctx.label} : {})),
+			(changed.prefixFilter || changed.$$props) && get_spread_object(prefixFilter$1(ctx.$$props, 'input$'))
 								]) : {};
 			if (!updating_value && changed.value) {
 				input_changes.value = ctx.value;
+			}
+			if (!updating_files && changed.files) {
+				input_changes.files = ctx.files;
 			}
 			if (!updating_dirty && changed.dirty) {
 				input_changes.dirty = ctx.dirty;
@@ -7807,18 +7861,18 @@ function create_else_block$2(ctx) {
 			destroy_component(input, detaching);
 		}
 	};
-	dispatch_dev("SvelteRegisterBlock", { block, id: create_else_block$2.name, type: "else", source: "(31:4) {:else}", ctx });
+	dispatch_dev("SvelteRegisterBlock", { block, id: create_else_block$2.name, type: "else", source: "(34:4) {:else}", ctx });
 	return block;
 }
 
-// (20:4) {#if textarea}
+// (23:4) {#if textarea}
 function create_if_block_6(ctx) {
 	var updating_value, updating_dirty, updating_invalid, current;
 
 	var textarea_1_spread_levels = [
 		{ disabled: ctx.disabled },
 		{ updateInvalid: ctx.updateInvalid },
-		prefixFilter(ctx.$$props, 'input$')
+		prefixFilter$1(ctx.$$props, 'input$')
 	];
 
 	function textarea_1_value_binding(value_1) {
@@ -7874,7 +7928,7 @@ function create_if_block_6(ctx) {
 			var textarea_1_changes = (changed.disabled || changed.updateInvalid || changed.prefixFilter || changed.$$props) ? get_spread_update(textarea_1_spread_levels, [
 									(changed.disabled) && { disabled: ctx.disabled },
 			(changed.updateInvalid) && { updateInvalid: ctx.updateInvalid },
-			(changed.prefixFilter || changed.$$props) && get_spread_object(prefixFilter(ctx.$$props, 'input$'))
+			(changed.prefixFilter || changed.$$props) && get_spread_object(prefixFilter$1(ctx.$$props, 'input$'))
 								]) : {};
 			if (!updating_value && changed.value) {
 				textarea_1_changes.value = ctx.value;
@@ -7904,11 +7958,11 @@ function create_if_block_6(ctx) {
 			destroy_component(textarea_1, detaching);
 		}
 	};
-	dispatch_dev("SvelteRegisterBlock", { block, id: create_if_block_6.name, type: "if", source: "(20:4) {#if textarea}", ctx });
+	dispatch_dev("SvelteRegisterBlock", { block, id: create_if_block_6.name, type: "if", source: "(23:4) {#if textarea}", ctx });
 	return block;
 }
 
-// (45:4) {#if !textarea && variant !== 'outlined'}
+// (49:4) {#if !textarea && variant !== 'outlined'}
 function create_if_block_3(ctx) {
 	var t, if_block1_anchor, current;
 
@@ -7997,17 +8051,17 @@ function create_if_block_3(ctx) {
 			}
 		}
 	};
-	dispatch_dev("SvelteRegisterBlock", { block, id: create_if_block_3.name, type: "if", source: "(45:4) {#if !textarea && variant !== 'outlined'}", ctx });
+	dispatch_dev("SvelteRegisterBlock", { block, id: create_if_block_3.name, type: "if", source: "(49:4) {#if !textarea && variant !== 'outlined'}", ctx });
 	return block;
 }
 
-// (46:6) {#if !noLabel && label != null && !fullwidth}
+// (50:6) {#if !noLabel && label != null && !fullwidth}
 function create_if_block_5(ctx) {
 	var current;
 
 	var floatinglabel_spread_levels = [
 		{ wrapped: true },
-		prefixFilter(ctx.$$props, 'label$')
+		prefixFilter$1(ctx.$$props, 'label$')
 	];
 
 	let floatinglabel_props = {
@@ -8035,7 +8089,7 @@ function create_if_block_5(ctx) {
 		p: function update(changed, ctx) {
 			var floatinglabel_changes = (changed.prefixFilter || changed.$$props) ? get_spread_update(floatinglabel_spread_levels, [
 									floatinglabel_spread_levels[0],
-			get_spread_object(prefixFilter(ctx.$$props, 'label$'))
+			get_spread_object(prefixFilter$1(ctx.$$props, 'label$'))
 								]) : {};
 			if (changed.$$scope || changed.label) floatinglabel_changes.$$scope = { changed, ctx };
 			floatinglabel.$set(floatinglabel_changes);
@@ -8057,11 +8111,11 @@ function create_if_block_5(ctx) {
 			destroy_component(floatinglabel, detaching);
 		}
 	};
-	dispatch_dev("SvelteRegisterBlock", { block, id: create_if_block_5.name, type: "if", source: "(46:6) {#if !noLabel && label != null && !fullwidth}", ctx });
+	dispatch_dev("SvelteRegisterBlock", { block, id: create_if_block_5.name, type: "if", source: "(50:6) {#if !noLabel && label != null && !fullwidth}", ctx });
 	return block;
 }
 
-// (47:8) <FloatingLabel wrapped {...prefixFilter($$props, 'label$')}>
+// (51:8) <FloatingLabel wrapped {...prefixFilter($$props, 'label$')}>
 function create_default_slot_2(ctx) {
 	var t, current;
 
@@ -8121,16 +8175,16 @@ function create_default_slot_2(ctx) {
 			if (label_slot) label_slot.d(detaching);
 		}
 	};
-	dispatch_dev("SvelteRegisterBlock", { block, id: create_default_slot_2.name, type: "slot", source: "(47:8) <FloatingLabel wrapped {...prefixFilter($$props, 'label$')}>", ctx });
+	dispatch_dev("SvelteRegisterBlock", { block, id: create_default_slot_2.name, type: "slot", source: "(51:8) <FloatingLabel wrapped {...prefixFilter($$props, 'label$')}>", ctx });
 	return block;
 }
 
-// (49:6) {#if ripple}
+// (53:6) {#if ripple}
 function create_if_block_4(ctx) {
 	var current;
 
 	var lineripple_spread_levels = [
-		prefixFilter(ctx.$$props, 'ripple$')
+		prefixFilter$1(ctx.$$props, 'ripple$')
 	];
 
 	let lineripple_props = {};
@@ -8151,7 +8205,7 @@ function create_if_block_4(ctx) {
 
 		p: function update(changed, ctx) {
 			var lineripple_changes = (changed.prefixFilter || changed.$$props) ? get_spread_update(lineripple_spread_levels, [
-									get_spread_object(prefixFilter(ctx.$$props, 'ripple$'))
+									get_spread_object(prefixFilter$1(ctx.$$props, 'ripple$'))
 								]) : {};
 			lineripple.$set(lineripple_changes);
 		},
@@ -8172,17 +8226,17 @@ function create_if_block_4(ctx) {
 			destroy_component(lineripple, detaching);
 		}
 	};
-	dispatch_dev("SvelteRegisterBlock", { block, id: create_if_block_4.name, type: "if", source: "(49:6) {#if ripple}", ctx });
+	dispatch_dev("SvelteRegisterBlock", { block, id: create_if_block_4.name, type: "if", source: "(53:6) {#if ripple}", ctx });
 	return block;
 }
 
-// (53:4) {#if textarea || (variant === 'outlined' && !fullwidth)}
+// (57:4) {#if textarea || (variant === 'outlined' && !fullwidth)}
 function create_if_block_1(ctx) {
 	var current;
 
 	var notchedoutline_spread_levels = [
 		{ noLabel: ctx.noLabel || ctx.label == null },
-		prefixFilter(ctx.$$props, 'outline$')
+		prefixFilter$1(ctx.$$props, 'outline$')
 	];
 
 	let notchedoutline_props = {
@@ -8210,7 +8264,7 @@ function create_if_block_1(ctx) {
 		p: function update(changed, ctx) {
 			var notchedoutline_changes = (changed.noLabel || changed.label || changed.prefixFilter || changed.$$props) ? get_spread_update(notchedoutline_spread_levels, [
 									(changed.noLabel || changed.label) && { noLabel: ctx.noLabel || ctx.label == null },
-			(changed.prefixFilter || changed.$$props) && get_spread_object(prefixFilter(ctx.$$props, 'outline$'))
+			(changed.prefixFilter || changed.$$props) && get_spread_object(prefixFilter$1(ctx.$$props, 'outline$'))
 								]) : {};
 			if (changed.$$scope || changed.noLabel || changed.label) notchedoutline_changes.$$scope = { changed, ctx };
 			notchedoutline.$set(notchedoutline_changes);
@@ -8232,17 +8286,17 @@ function create_if_block_1(ctx) {
 			destroy_component(notchedoutline, detaching);
 		}
 	};
-	dispatch_dev("SvelteRegisterBlock", { block, id: create_if_block_1.name, type: "if", source: "(53:4) {#if textarea || (variant === 'outlined' && !fullwidth)}", ctx });
+	dispatch_dev("SvelteRegisterBlock", { block, id: create_if_block_1.name, type: "if", source: "(57:4) {#if textarea || (variant === 'outlined' && !fullwidth)}", ctx });
 	return block;
 }
 
-// (55:8) {#if !noLabel && label != null}
+// (59:8) {#if !noLabel && label != null}
 function create_if_block_2(ctx) {
 	var current;
 
 	var floatinglabel_spread_levels = [
 		{ wrapped: true },
-		prefixFilter(ctx.$$props, 'label$')
+		prefixFilter$1(ctx.$$props, 'label$')
 	];
 
 	let floatinglabel_props = {
@@ -8270,7 +8324,7 @@ function create_if_block_2(ctx) {
 		p: function update(changed, ctx) {
 			var floatinglabel_changes = (changed.prefixFilter || changed.$$props) ? get_spread_update(floatinglabel_spread_levels, [
 									floatinglabel_spread_levels[0],
-			get_spread_object(prefixFilter(ctx.$$props, 'label$'))
+			get_spread_object(prefixFilter$1(ctx.$$props, 'label$'))
 								]) : {};
 			if (changed.$$scope || changed.label) floatinglabel_changes.$$scope = { changed, ctx };
 			floatinglabel.$set(floatinglabel_changes);
@@ -8292,11 +8346,11 @@ function create_if_block_2(ctx) {
 			destroy_component(floatinglabel, detaching);
 		}
 	};
-	dispatch_dev("SvelteRegisterBlock", { block, id: create_if_block_2.name, type: "if", source: "(55:8) {#if !noLabel && label != null}", ctx });
+	dispatch_dev("SvelteRegisterBlock", { block, id: create_if_block_2.name, type: "if", source: "(59:8) {#if !noLabel && label != null}", ctx });
 	return block;
 }
 
-// (56:10) <FloatingLabel wrapped {...prefixFilter($$props, 'label$')}>
+// (60:10) <FloatingLabel wrapped {...prefixFilter($$props, 'label$')}>
 function create_default_slot_1(ctx) {
 	var t, current;
 
@@ -8356,11 +8410,11 @@ function create_default_slot_1(ctx) {
 			if (label_slot) label_slot.d(detaching);
 		}
 	};
-	dispatch_dev("SvelteRegisterBlock", { block, id: create_default_slot_1.name, type: "slot", source: "(56:10) <FloatingLabel wrapped {...prefixFilter($$props, 'label$')}>", ctx });
+	dispatch_dev("SvelteRegisterBlock", { block, id: create_default_slot_1.name, type: "slot", source: "(60:10) <FloatingLabel wrapped {...prefixFilter($$props, 'label$')}>", ctx });
 	return block;
 }
 
-// (54:6) <NotchedOutline noLabel={noLabel || label == null} {...prefixFilter($$props, 'outline$')}>
+// (58:6) <NotchedOutline noLabel={noLabel || label == null} {...prefixFilter($$props, 'outline$')}>
 function create_default_slot(ctx) {
 	var if_block_anchor, current;
 
@@ -8417,7 +8471,7 @@ function create_default_slot(ctx) {
 			}
 		}
 	};
-	dispatch_dev("SvelteRegisterBlock", { block, id: create_default_slot.name, type: "slot", source: "(54:6) <NotchedOutline noLabel={noLabel || label == null} {...prefixFilter($$props, 'outline$')}>", ctx });
+	dispatch_dev("SvelteRegisterBlock", { block, id: create_default_slot.name, type: "slot", source: "(58:6) <NotchedOutline noLabel={noLabel || label == null} {...prefixFilter($$props, 'outline$')}>", ctx });
 	return block;
 }
 
@@ -8506,10 +8560,16 @@ function instance$a($$self, $$props, $$invalidate) {
   const forwardEvents = forwardEventsBuilder(current_component);
   let uninitializedValue = () => {};
 
-  let { use = [], class: className = '', ripple = true, disabled = false, fullwidth = false, textarea = false, variant = 'standard', dense = false, withLeadingIcon = false, withTrailingIcon = false, noLabel = false, label = null, type = 'text', value = uninitializedValue, dirty = false, invalid = uninitializedValue, updateInvalid = invalid === uninitializedValue, useNativeValidation = updateInvalid } = $$props;
+  let { use = [], class: className = '', ripple = true, disabled = false, fullwidth = false, textarea = false, variant = 'standard', dense = false, withLeadingIcon = false, withTrailingIcon = false, noLabel = false, label = null, type = 'text', value = uninitializedValue, files = uninitializedValue, dirty = false, invalid = uninitializedValue, updateInvalid = invalid === uninitializedValue, useNativeValidation = updateInvalid } = $$props;
 
   let element;
   let textField;
+  let addLayoutListener = getContext('SMUI:addLayoutListener');
+  let removeLayoutListener;
+
+  if (addLayoutListener) {
+    removeLayoutListener = addLayoutListener(layout);
+  }
 
   onMount(() => {
     $$invalidate('textField', textField = new MDCTextField(element));
@@ -8521,6 +8581,10 @@ function instance$a($$self, $$props, $$invalidate) {
 
   onDestroy(() => {
     textField && textField.destroy();
+
+    if (removeLayoutListener) {
+      removeLayoutListener();
+    }
   });
 
   function focus(...args) {
@@ -8561,7 +8625,7 @@ function instance$a($$self, $$props, $$invalidate) {
 
 	function textarea_1_invalid_binding(value_3) {
 		invalid = value_3;
-		$$invalidate('invalid', invalid), $$invalidate('textField', textField), $$invalidate('updateInvalid', updateInvalid), $$invalidate('valued', valued), $$invalidate('value', value), $$invalidate('disabled', disabled), $$invalidate('useNativeValidation', useNativeValidation), $$invalidate('uninitializedValue', uninitializedValue);
+		$$invalidate('invalid', invalid), $$invalidate('textField', textField), $$invalidate('updateInvalid', updateInvalid), $$invalidate('value', value), $$invalidate('uninitializedValue', uninitializedValue), $$invalidate('disabled', disabled), $$invalidate('useNativeValidation', useNativeValidation);
 	}
 
 	function input_value_binding(value_1) {
@@ -8569,14 +8633,19 @@ function instance$a($$self, $$props, $$invalidate) {
 		$$invalidate('value', value);
 	}
 
-	function input_dirty_binding(value_2) {
-		dirty = value_2;
+	function input_files_binding(value_2) {
+		files = value_2;
+		$$invalidate('files', files);
+	}
+
+	function input_dirty_binding(value_3) {
+		dirty = value_3;
 		$$invalidate('dirty', dirty);
 	}
 
-	function input_invalid_binding(value_3) {
-		invalid = value_3;
-		$$invalidate('invalid', invalid), $$invalidate('textField', textField), $$invalidate('updateInvalid', updateInvalid), $$invalidate('valued', valued), $$invalidate('value', value), $$invalidate('disabled', disabled), $$invalidate('useNativeValidation', useNativeValidation), $$invalidate('uninitializedValue', uninitializedValue);
+	function input_invalid_binding(value_4) {
+		invalid = value_4;
+		$$invalidate('invalid', invalid), $$invalidate('textField', textField), $$invalidate('updateInvalid', updateInvalid), $$invalidate('value', value), $$invalidate('uninitializedValue', uninitializedValue), $$invalidate('disabled', disabled), $$invalidate('useNativeValidation', useNativeValidation);
 	}
 
 	function label_1_binding($$value) {
@@ -8607,6 +8676,7 @@ function instance$a($$self, $$props, $$invalidate) {
 		if ('label' in $$new_props) $$invalidate('label', label = $$new_props.label);
 		if ('type' in $$new_props) $$invalidate('type', type = $$new_props.type);
 		if ('value' in $$new_props) $$invalidate('value', value = $$new_props.value);
+		if ('files' in $$new_props) $$invalidate('files', files = $$new_props.files);
 		if ('dirty' in $$new_props) $$invalidate('dirty', dirty = $$new_props.dirty);
 		if ('invalid' in $$new_props) $$invalidate('invalid', invalid = $$new_props.invalid);
 		if ('updateInvalid' in $$new_props) $$invalidate('updateInvalid', updateInvalid = $$new_props.updateInvalid);
@@ -8615,7 +8685,7 @@ function instance$a($$self, $$props, $$invalidate) {
 	};
 
 	$$self.$capture_state = () => {
-		return { uninitializedValue, use, className, ripple, disabled, fullwidth, textarea, variant, dense, withLeadingIcon, withTrailingIcon, noLabel, label, type, value, dirty, invalid, updateInvalid, useNativeValidation, element, textField, props, valued, placeholderProp };
+		return { uninitializedValue, use, className, ripple, disabled, fullwidth, textarea, variant, dense, withLeadingIcon, withTrailingIcon, noLabel, label, type, value, files, dirty, invalid, updateInvalid, useNativeValidation, element, textField, addLayoutListener, removeLayoutListener, props, valued };
 	};
 
 	$$self.$inject_state = $$new_props => {
@@ -8635,24 +8705,25 @@ function instance$a($$self, $$props, $$invalidate) {
 		if ('label' in $$props) $$invalidate('label', label = $$new_props.label);
 		if ('type' in $$props) $$invalidate('type', type = $$new_props.type);
 		if ('value' in $$props) $$invalidate('value', value = $$new_props.value);
+		if ('files' in $$props) $$invalidate('files', files = $$new_props.files);
 		if ('dirty' in $$props) $$invalidate('dirty', dirty = $$new_props.dirty);
 		if ('invalid' in $$props) $$invalidate('invalid', invalid = $$new_props.invalid);
 		if ('updateInvalid' in $$props) $$invalidate('updateInvalid', updateInvalid = $$new_props.updateInvalid);
 		if ('useNativeValidation' in $$props) $$invalidate('useNativeValidation', useNativeValidation = $$new_props.useNativeValidation);
 		if ('element' in $$props) $$invalidate('element', element = $$new_props.element);
 		if ('textField' in $$props) $$invalidate('textField', textField = $$new_props.textField);
+		if ('addLayoutListener' in $$props) addLayoutListener = $$new_props.addLayoutListener;
+		if ('removeLayoutListener' in $$props) removeLayoutListener = $$new_props.removeLayoutListener;
 		if ('props' in $$props) $$invalidate('props', props = $$new_props.props);
 		if ('valued' in $$props) $$invalidate('valued', valued = $$new_props.valued);
-		if ('placeholderProp' in $$props) $$invalidate('placeholderProp', placeholderProp = $$new_props.placeholderProp);
 	};
 
-	let props, valued, placeholderProp;
+	let props, valued;
 
-	$$self.$$.update = ($$dirty = { $$props: 1, value: 1, uninitializedValue: 1, fullwidth: 1, label: 1, textField: 1, valued: 1, disabled: 1, invalid: 1, updateInvalid: 1, useNativeValidation: 1 }) => {
+	$$self.$$.update = ($$dirty = { $$props: 1, value: 1, uninitializedValue: 1, files: 1, textField: 1, disabled: 1, invalid: 1, updateInvalid: 1, useNativeValidation: 1 }) => {
 		$$invalidate('props', props = exclude($$props, ['use', 'class', 'ripple', 'disabled', 'fullwidth', 'textarea', 'variant', 'dense', 'withLeadingIcon', 'withTrailingIcon', 'noLabel', 'label', 'type', 'value', 'dirty', 'invalid', 'updateInvalid', 'useNativeValidation', 'input$', 'label$', 'ripple$', 'outline$']));
-		if ($$dirty.value || $$dirty.uninitializedValue) { $$invalidate('valued', valued = value !== uninitializedValue); }
-		if ($$dirty.fullwidth || $$dirty.label) { $$invalidate('placeholderProp', placeholderProp = (fullwidth && label) ? {placeholder: label} : {}); }
-		if ($$dirty.textField || $$dirty.valued || $$dirty.value) { if (textField && valued && textField.value !== value) {
+		if ($$dirty.value || $$dirty.uninitializedValue || $$dirty.files) { $$invalidate('valued', valued = value !== uninitializedValue || files !== uninitializedValue); }
+		if ($$dirty.textField || $$dirty.value || $$dirty.uninitializedValue) { if (textField && value !== uninitializedValue && textField.value !== value) {
         $$invalidate('textField', textField.value = value, textField);
       } }
 		if ($$dirty.textField || $$dirty.disabled) { if (textField && textField.disabled !== disabled) {
@@ -8686,6 +8757,7 @@ function instance$a($$self, $$props, $$invalidate) {
 		label,
 		type,
 		value,
+		files,
 		dirty,
 		invalid,
 		updateInvalid,
@@ -8696,7 +8768,6 @@ function instance$a($$self, $$props, $$invalidate) {
 		props,
 		$$props,
 		valued,
-		placeholderProp,
 		change_handler,
 		input_handler,
 		change_handler_1,
@@ -8705,6 +8776,7 @@ function instance$a($$self, $$props, $$invalidate) {
 		textarea_1_dirty_binding,
 		textarea_1_invalid_binding,
 		input_value_binding,
+		input_files_binding,
 		input_dirty_binding,
 		input_invalid_binding,
 		label_1_binding,
@@ -8718,7 +8790,7 @@ function instance$a($$self, $$props, $$invalidate) {
 class Textfield extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$a, create_fragment$a, safe_not_equal, ["use", "class", "ripple", "disabled", "fullwidth", "textarea", "variant", "dense", "withLeadingIcon", "withTrailingIcon", "noLabel", "label", "type", "value", "dirty", "invalid", "updateInvalid", "useNativeValidation", "focus", "layout"]);
+		init(this, options, instance$a, create_fragment$a, safe_not_equal, ["use", "class", "ripple", "disabled", "fullwidth", "textarea", "variant", "dense", "withLeadingIcon", "withTrailingIcon", "noLabel", "label", "type", "value", "files", "dirty", "invalid", "updateInvalid", "useNativeValidation", "focus", "layout"]);
 		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "Textfield", options, id: create_fragment$a.name });
 
 		const { ctx } = this.$$;
@@ -8843,6 +8915,14 @@ class Textfield extends SvelteComponentDev {
 		throw new Error("<Textfield>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 
+	get files() {
+		throw new Error("<Textfield>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set files(value) {
+		throw new Error("<Textfield>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
 	get dirty() {
 		throw new Error("<Textfield>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
@@ -8918,11 +8998,12 @@ function create_each_block(ctx) {
 			set_style(div0, "left", "0");
 			set_style(div0, "right", "0");
 			set_style(div0, "margin", "auto");
-			add_location(div0, file$b, 12, 4, 441);
+			add_location(div0, file$b, 12, 4, 497);
 			set_style(div1, "width", "" + ctx.$spritesheet.width / ctx.$frameCount + "px");
 			set_style(div1, "height", "" + ctx.$spritesheet.height + "px");
 			set_style(div1, "background-image", "url(" + ctx.$spritesheet.dataUrl + ")");
 			set_style(div1, "background-position", "" + (ctx.$spritesheet.width / ctx.$frameCount) * -ctx.i + "px 0");
+			set_style(div1, "opacity", (ctx.$currentFrame !== ctx.i && ctx.opacity ? '0.5' : '1'));
 			set_style(div1, "display", "inline-block");
 			set_style(div1, "border-right", ((ctx.i !== ctx.$frameCount - 1) ? '1px solid black' : 'none'));
 			set_style(div1, "position", "relative");
@@ -8948,6 +9029,10 @@ function create_each_block(ctx) {
 
 			if (changed.$spritesheet || changed.$frameCount) {
 				set_style(div1, "background-position", "" + (ctx.$spritesheet.width / ctx.$frameCount) * -ctx.i + "px 0");
+			}
+
+			if (changed.$currentFrame || changed.opacity) {
+				set_style(div1, "opacity", (ctx.$currentFrame !== ctx.i && ctx.opacity ? '0.5' : '1'));
 			}
 
 			if (changed.$frameCount) {
@@ -8998,7 +9083,7 @@ function create_fragment$b(ctx) {
 		},
 
 		p: function update(changed, ctx) {
-			if (changed.$spritesheet || changed.$frameCount) {
+			if (changed.$spritesheet || changed.$frameCount || changed.$currentFrame || changed.opacity) {
 				each_value = new Array(ctx.$frameCount).fill(0);
 
 				let i;
@@ -9037,30 +9122,58 @@ function create_fragment$b(ctx) {
 }
 
 function instance$b($$self, $$props, $$invalidate) {
-	let $frameCount, $spritesheet;
+	let $frameCount, $spritesheet, $currentFrame;
 
-	validate_store(frameCount, 'frameCount');
-	component_subscribe($$self, frameCount, $$value => { $frameCount = $$value; $$invalidate('$frameCount', $frameCount); });
+	validate_store(frameCount$1, 'frameCount');
+	component_subscribe($$self, frameCount$1, $$value => { $frameCount = $$value; $$invalidate('$frameCount', $frameCount); });
 	validate_store(spritesheet, 'spritesheet');
 	component_subscribe($$self, spritesheet, $$value => { $spritesheet = $$value; $$invalidate('$spritesheet', $spritesheet); });
+	validate_store(currentFrame, 'currentFrame');
+	component_subscribe($$self, currentFrame, $$value => { $currentFrame = $$value; $$invalidate('$currentFrame', $currentFrame); });
+
+	let { opacity = false } = $$props;
+
+	const writable_props = ['opacity'];
+	Object.keys($$props).forEach(key => {
+		if (!writable_props.includes(key) && !key.startsWith('$$')) console.warn(`<FullFrameDisplay> was created with unknown prop '${key}'`);
+	});
+
+	$$self.$set = $$props => {
+		if ('opacity' in $$props) $$invalidate('opacity', opacity = $$props.opacity);
+	};
 
 	$$self.$capture_state = () => {
-		return {};
+		return { opacity, $frameCount, $spritesheet, $currentFrame };
 	};
 
 	$$self.$inject_state = $$props => {
-		if ('$frameCount' in $$props) frameCount.set($frameCount);
+		if ('opacity' in $$props) $$invalidate('opacity', opacity = $$props.opacity);
+		if ('$frameCount' in $$props) frameCount$1.set($frameCount);
 		if ('$spritesheet' in $$props) spritesheet.set($spritesheet);
+		if ('$currentFrame' in $$props) currentFrame.set($currentFrame);
 	};
 
-	return { $frameCount, $spritesheet };
+	return {
+		opacity,
+		$frameCount,
+		$spritesheet,
+		$currentFrame
+	};
 }
 
 class FullFrameDisplay extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$b, create_fragment$b, safe_not_equal, []);
+		init(this, options, instance$b, create_fragment$b, safe_not_equal, ["opacity"]);
 		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "FullFrameDisplay", options, id: create_fragment$b.name });
+	}
+
+	get opacity() {
+		throw new Error("<FullFrameDisplay>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set opacity(value) {
+		throw new Error("<FullFrameDisplay>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 }
 
@@ -9413,7 +9526,7 @@ function create_fragment$c(ctx) {
 function instance$c($$self) {
  
   const updateFrameCount = (evt) => {
-    frameCount.set(parseInt(evt.target.value));
+    if (evt.target.value > 0) frameCount$1.set(parseInt(evt.target.value));
   };
 
 	$$self.$capture_state = () => {
@@ -10318,122 +10431,9 @@ class Upload extends SvelteComponentDev {
 	}
 }
 
-/* src\components\monaco\monaco-editor.svelte generated by Svelte v3.12.1 */
-
-const file$f = "src\\components\\monaco\\monaco-editor.svelte";
-
-function create_fragment$f(ctx) {
-	var div;
-
-	const block = {
-		c: function create() {
-			div = element("div");
-			attr_dev(div, "class", "monaco-container");
-			set_style(div, "height", "500px");
-			set_style(div, "text-align", "left");
-			add_location(div, file$f, 50, 0, 1043);
-		},
-
-		l: function claim(nodes) {
-			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-		},
-
-		m: function mount(target, anchor) {
-			insert_dev(target, div, anchor);
-			ctx.div_binding(div);
-		},
-
-		p: noop,
-		i: noop,
-		o: noop,
-
-		d: function destroy(detaching) {
-			if (detaching) {
-				detach_dev(div);
-			}
-
-			ctx.div_binding(null);
-		}
-	};
-	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$f.name, type: "component", source: "", ctx });
-	return block;
-}
-
-let monaco_promise;
-let _monaco;
-
-monaco_promise = import('./monaco-a1addfdd.js');
-monaco_promise.then(mod => {
-  _monaco = mod.default;
-});
-
-function instance$f($$self, $$props, $$invalidate) {
-	let monaco;
-  let container;
-  let editor;
-
-  onMount(() => {
-		if (_monaco) {
-      monaco = _monaco;
-      editor = monaco.editor.create(
-        container
-      );
-			// createEditor(mode || 'svelte').then(() => {
-			// 	if (editor) editor.setValue(code || '');
-      // });
-		} else {
-			monaco_promise.then(async mod => {
-        console.log(container);
-        monaco = mod.default;
-        editor = monaco.editor.create(
-          container,
-          {
-            value: [
-              'var thing = 12345678.98765;'
-            ].join('\n'),
-            language: 'gamemaker'
-          }
-        );
-        window['editor'] = editor;
-      });
-		}
-		return () => {
-			destroyed = true;
-			// if (editor) editor.toTextArea();
-		}
-  });
-  //butts2
-
-	function div_binding($$value) {
-		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
-			$$invalidate('container', container = $$value);
-		});
-	}
-
-	$$self.$capture_state = () => {
-		return {};
-	};
-
-	$$self.$inject_state = $$props => {
-		if ('monaco' in $$props) monaco = $$props.monaco;
-		if ('container' in $$props) $$invalidate('container', container = $$props.container);
-		if ('editor' in $$props) editor = $$props.editor;
-	};
-
-	return { container, div_binding };
-}
-
-class Monaco_editor extends SvelteComponentDev {
-	constructor(options) {
-		super(options);
-		init(this, options, instance$f, create_fragment$f, safe_not_equal, []);
-		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "Monaco_editor", options, id: create_fragment$f.name });
-	}
-}
-
 /* src\prompts\begin.svelte generated by Svelte v3.12.1 */
 
-const file$g = "src\\prompts\\begin.svelte";
+const file$f = "src\\prompts\\begin.svelte";
 
 // (7:8) <Label>
 function create_default_slot_3$3(ctx) {
@@ -10605,8 +10605,8 @@ function create_default_slot$4(ctx) {
 	return block;
 }
 
-function create_fragment$g(ctx) {
-	var div, h1, t1, t2, div_intro, div_outro, current;
+function create_fragment$f(ctx) {
+	var div, h1, t_1, div_intro, div_outro, current;
 
 	var formfield = new FormField({
 		props: {
@@ -10616,20 +10616,16 @@ function create_fragment$g(ctx) {
 		$$inline: true
 	});
 
-	var editor = new Monaco_editor({ $$inline: true });
-
 	const block = {
 		c: function create() {
 			div = element("div");
 			h1 = element("h1");
 			h1.textContent = "How do you want to begin?";
-			t1 = space();
+			t_1 = space();
 			formfield.$$.fragment.c();
-			t2 = space();
-			editor.$$.fragment.c();
-			add_location(h1, file$g, 2, 2, 105);
+			add_location(h1, file$f, 2, 2, 105);
 			attr_dev(div, "class", "container svelte-rcpnnu");
-			add_location(div, file$g, 1, 0, 2);
+			add_location(div, file$f, 1, 0, 2);
 		},
 
 		l: function claim(nodes) {
@@ -10639,10 +10635,8 @@ function create_fragment$g(ctx) {
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
 			append_dev(div, h1);
-			append_dev(div, t1);
+			append_dev(div, t_1);
 			mount_component(formfield, div, null);
-			append_dev(div, t2);
-			mount_component(editor, div, null);
 			current = true;
 		},
 
@@ -10656,8 +10650,6 @@ function create_fragment$g(ctx) {
 			if (current) return;
 			transition_in(formfield.$$.fragment, local);
 
-			transition_in(editor.$$.fragment, local);
-
 			add_render_callback(() => {
 				if (div_outro) div_outro.end(1);
 				if (!div_intro) div_intro = create_in_transition(div, fly, { y: 150, duration: 500 });
@@ -10669,7 +10661,6 @@ function create_fragment$g(ctx) {
 
 		o: function outro(local) {
 			transition_out(formfield.$$.fragment, local);
-			transition_out(editor.$$.fragment, local);
 			if (div_intro) div_intro.invalidate();
 
 			div_outro = create_out_transition(div, fly, { y: -150, duration: 500 });
@@ -10684,18 +10675,16 @@ function create_fragment$g(ctx) {
 
 			destroy_component(formfield);
 
-			destroy_component(editor);
-
 			if (detaching) {
 				if (div_outro) div_outro.end();
 			}
 		}
 	};
-	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$g.name, type: "component", source: "", ctx });
+	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$f.name, type: "component", source: "", ctx });
 	return block;
 }
 
-function instance$g($$self) {
+function instance$f($$self) {
 	
 
   const dispatch = createEventDispatcher();
@@ -10714,16 +10703,16 @@ function instance$g($$self) {
 class Begin extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$g, create_fragment$g, safe_not_equal, []);
-		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "Begin", options, id: create_fragment$g.name });
+		init(this, options, instance$f, create_fragment$f, safe_not_equal, []);
+		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "Begin", options, id: create_fragment$f.name });
 	}
 }
 
 /* src\App.svelte generated by Svelte v3.12.1 */
 
-const file$h = "src\\App.svelte";
+const file$g = "src\\App.svelte";
 
-function create_fragment$h(ctx) {
+function create_fragment$g(ctx) {
 	var div, current;
 
 	var switch_value = ctx.page;
@@ -10742,8 +10731,8 @@ function create_fragment$h(ctx) {
 			div = element("div");
 			if (switch_instance) switch_instance.$$.fragment.c();
 			attr_dev(div, "id", "app");
-			attr_dev(div, "class", "svelte-4l7xfm");
-			add_location(div, file$h, 0, 0, 0);
+			attr_dev(div, "class", "svelte-1p8phu0");
+			add_location(div, file$g, 0, 0, 0);
 		},
 
 		l: function claim(nodes) {
@@ -10804,11 +10793,11 @@ function create_fragment$h(ctx) {
 			if (switch_instance) destroy_component(switch_instance);
 		}
 	};
-	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$h.name, type: "component", source: "", ctx });
+	dispatch_dev("SvelteRegisterBlock", { block, id: create_fragment$g.name, type: "component", source: "", ctx });
 	return block;
 }
 
-function instance$h($$self, $$props, $$invalidate) {
+function instance$g($$self, $$props, $$invalidate) {
 	let page = Begin;
 
 	const continue_handler = (evt) => $$invalidate('page', page = evt.detail);
@@ -10827,8 +10816,8 @@ function instance$h($$self, $$props, $$invalidate) {
 class App extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$h, create_fragment$h, safe_not_equal, []);
-		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "App", options, id: create_fragment$h.name });
+		init(this, options, instance$g, create_fragment$g, safe_not_equal, []);
+		dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "App", options, id: create_fragment$g.name });
 	}
 }
 
