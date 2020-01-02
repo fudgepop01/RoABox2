@@ -5,7 +5,9 @@ import livereload from 'rollup-plugin-livereload';
 import json from 'rollup-plugin-json';
 import postcss from 'rollup-plugin-postcss';
 import url from '@rollup/plugin-url';
+// import alias from '@rollup/plugin-alias';
 import { terser } from 'rollup-plugin-terser';
+
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -40,6 +42,11 @@ export default {
 			preferBuiltins: false
 		}),
 		commonjs(),
+		{
+			intro: function() {
+				return 'var require;';
+			}
+		},
 		json(),
 		postcss({
 			extract: true,

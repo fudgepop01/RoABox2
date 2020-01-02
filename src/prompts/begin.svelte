@@ -8,6 +8,7 @@
       </Button>
     </BtnGroup>
   </FormField>
+  <WebFS />
 </div>
 
 <!-- SCRIPT STARTS HERE -->
@@ -18,7 +19,7 @@
   import Button, { Label, Group as BtnGroup } from '@smui/button';
   import FormField from '@smui/form-field';
 
-  import Timeline from '../components/timeline/Timeline.svelte';
+  import WebFS from '../components/webFS/WebFS.svelte';
   import Upload from './upload.svelte';
 
   const dispatch = createEventDispatcher();
