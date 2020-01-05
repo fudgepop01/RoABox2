@@ -14,7 +14,7 @@
           <Button variant="outlined" on:click={() => dispatch('continue', Upload)}>
             <Label>no, go back</Label>
           </Button>
-          
+
         </BtnGroup>
       </FormField>
     {/await}
@@ -29,10 +29,10 @@
   import FormField from '@smui/form-field';
   import LinearProgress from '@smui/linear-progress';
 
-  import { spritesheet } from '../store/spritesheet'; 
-
   import Upload from './upload.svelte';
   import Framecount from './framecount.svelte';
+
+  import { spritesheet } from '../store/spritesheet';
 
   const dispatch = createEventDispatcher();
 </script>

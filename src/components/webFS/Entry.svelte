@@ -1,5 +1,5 @@
-<div class="container{data.path === $selected ? ' selected' : ''}"
-  on:click|stopPropagation={() => selected.set(data.path)}
+<div class="container{data.path === $selected ? ' selected' : ''}{data.dirty ? ' dirty' : ''}"
+  on:click|stopPropagation={select}
   transition:fly="{{delay: 0, duration: 300, x: -20, opacity: 0, easing: quintInOut}}"
 >
   {#if uploading}
@@ -29,7 +29,7 @@
   {/if}
   {#if data.open}
     {#each data.children as child}
-      <svelte:self data={child}></svelte:self>
+      <svelte:self data={child} on:fileSelected></svelte:self>
     {/each}
   {/if}
 </div>
@@ -45,7 +45,7 @@
     mdiFolderUpload
   } from '@mdi/js'
 
-  import { tick } from 'svelte';
+  import { tick, createEventDispatcher } from 'svelte';
   import { fly } from 'svelte/transition';
   import { quintInOut } from 'svelte/easing';
 
@@ -64,6 +64,12 @@
     if (data.type === 'folder') {
       data.open = !data.open;
     }
+  }
+
+  let dispatch = createEventDispatcher();
+  const select = () => {
+    selected.set(data.path);
+    dispatch('fileSelected', data);
   }
 
   const renameStart = async () => {
@@ -114,6 +120,7 @@
     padding-left: 24px;
     box-sizing: border-box;
     user-select: none;
+    padding-top: 2px;
   }
 
   .container:hover::before {
@@ -128,6 +135,14 @@
     content: '>';
     color: #000;
     right: calc(100% - 20px);
+  }
+
+  .container.dirty {
+    background-color: #f003
+  }
+
+  .container.selected {
+    background-color: #0003;
   }
 
   svg {

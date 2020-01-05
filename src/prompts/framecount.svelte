@@ -3,13 +3,13 @@
   <FullFrameDisplay />
   <h1>How many frames are in this spritesheet?</h1>
   <FormField>
-    <TextField 
-      on:change={updateFrameCount} 
+    <TextField
+      on:change={updateFrameCount}
       value="1"
       class="frame-count"
-      type="number" 
-      label="# frames" 
-      input$min="1" 
+      type="number"
+      label="# frames"
+      input$min="1"
       input$max="99"
     />
   </FormField>
@@ -18,7 +18,7 @@
   <FormField>
 
     <BtnGroup class="buttons">
-      <Button variant="outlined">
+      <Button variant="outlined" on:click={() => dispatch('continue', 'NONE')}>
         <Label>continue...</Label>
       </Button>
     </BtnGroup>
@@ -38,9 +38,11 @@
 
   import FullFrameDisplay from '../components/FullFrameDisplay.svelte';
 
-  import { spritesheet, frameCount } from '../store/spritesheet'; 
+  import Main from './main.svelte';
+
+  import { spritesheet, frameCount } from '../store/spritesheet';
   const dispatch = createEventDispatcher();
- 
+
   const updateFrameCount = (evt) => {
     if (evt.target.value > 0) frameCount.set(parseInt(evt.target.value));
   }

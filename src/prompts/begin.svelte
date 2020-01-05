@@ -8,7 +8,6 @@
       </Button>
     </BtnGroup>
   </FormField>
-  <WebFS />
 </div>
 
 <!-- SCRIPT STARTS HERE -->

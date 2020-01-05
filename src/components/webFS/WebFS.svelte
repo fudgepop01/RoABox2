@@ -1,10 +1,10 @@
 <div class="container">
   {#if uploading}
-    <input type="file" bind:this={uploadInput} on:change={uploadSelected}/>
+    <input type="file" bind:this={uploadInput} on:change={uploadZip}/>
   {/if}
   <div class="files">
     {#each $fileSystem as item}
-      <Entry data={item} root={true} />
+      <Entry data={item} root={true} on:fileSelected />
     {/each}
   </div>
   <div class="options">
@@ -69,11 +69,11 @@
     uploadInput.click();
   }
 
-  const uploadSelected = () => {
+  const uploadZip = () => {
     const file = uploadInput.files[0];
     const reader = new FileReader();
     reader.onload = () => {
-      fileSystem.loadFromZip(reader.result, file.name.substring(0, file.name.length - 4), data.path);
+      fileSystem.loadFromZip(reader.result, file.name.substring(0, file.name.length - 4), '');
       uploading = false;
     }
     reader.readAsArrayBuffer(file);
@@ -96,8 +96,8 @@
     left: 0;
     right: 0;
     margin: auto;
-    width: 300px;
-    height: 500px;
+    width: 100%;
+    height: 100%;
     box-shadow: 0 2px 2px #000;
     text-align: left;
     font-family: 'Roboto';
@@ -107,7 +107,10 @@
   .files {
     position: absolute;
     width: 100%;
+    height: calc(100% - 40px);
     top: 40px;
+
+    overflow-y: scroll;
   }
 
   .options {

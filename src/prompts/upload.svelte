@@ -12,30 +12,38 @@
         </Button>
       </BtnGroup>
     </div>
-  </FormField>  
+  </FormField>
 </div>
-
 
 <!-- SCRIPT STARTS HERE -->
 <script>
   import { createEventDispatcher } from 'svelte';
   import { fly } from 'svelte/transition';
+  import gifFrames from 'gif-frames/dist/gif-frames.min.js';
+  import mergeImages from 'merge-base64';
 
   import Button, { Label, Group as BtnGroup } from '@smui/button';
   import FormField from '@smui/form-field';
   import LinearProgress from '@smui/linear-progress';
-  
+
   import Confirm from './image_confirmation.svelte';
-  
-  import { spritesheet } from '../store/spritesheet'; 
+
+  import { spritesheet } from '../store/spritesheet';
 
   const dispatch = createEventDispatcher();
   let upload;
-  
+
   let uploadFile = false;
   let statusMsg = '';
 
-  const processImage = (file) => {   
+  function bufferToBase64(buf) {
+    var binstr = Array.prototype.map.call(buf, function (ch) {
+        return String.fromCharCode(ch);
+    }).join('');
+    return btoa(binstr);
+  }
+
+  const processImage = (file) => {
     let spritesheetSrc = {};
     return new Promise(async (resolve) => {
       spritesheetSrc.file = file;
@@ -44,23 +52,41 @@
       let fileReader = new FileReader();
 
       statusMsg = 'reading file...';
-      
-      fileReader.onloadend = () => {
-        statusMsg = 'getting image data...'
 
-        spritesheetSrc.dataUrl = fileReader.result;
-        let img = new Image();
-        img.onload = function() {
-          spritesheetSrc.width = this.width;
-          spritesheetSrc.height = this.height;
-          spritesheet.update(n => spritesheetSrc);
-          resolve(spritesheetSrc);
-        }
-        img.src = fileReader.result;
-      };
-      fileReader.readAsDataURL(file);
+      let img = new Image();
+      img.onload = function() {
+        spritesheetSrc.width = this.width;
+        spritesheetSrc.height = this.height;
+        spritesheet.update(n => spritesheetSrc);
+        resolve(spritesheetSrc);
+      }
+
+      // sadly, this method for GIFs results in a great loss in quality
+      // perhaps i'll come back to it later, but not now
+      // if (file.type === 'image/gif') {
+      //   // console.log(fileReader.result);
+      //   const frames = await gifFrames({url: URL.createObjectURL(file), frames: 'all'});
+      //   const decoder = new TextDecoder('ASCII');
+      //   const toConvert = [...frames.map(f => f.getImage()._obj.buffer)];
+      //   const convertedB64 = await mergeImages(toConvert, {
+      //     color: '0x000'
+      //   });
+
+      //   console.log(convertedB64);
+      //   spritesheetSrc.dataUrl = convertedB64;
+      //   img.src = convertedB64;
+      // } else {
+        fileReader.onloadend = async () => {
+          statusMsg = 'getting image data...'
+          spritesheetSrc.dataUrl = fileReader.result;
+          img.src = fileReader.result;
+        };
+        fileReader.readAsDataURL(file);
+      // }
+
+
     })
-		
+
 	}
 </script>
 

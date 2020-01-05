@@ -9,18 +9,32 @@
 </script>
 
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, createEventDispatcher } from 'svelte';
+
+  import { setupAll } from './commands.js';
+
+  export let style;
 
   let monaco;
   let container;
   let editor;
 
+  let dispatch = createEventDispatcher();
   onMount(() => {
 		if (_monaco) {
       monaco = _monaco;
       editor = monaco.editor.create(
-        container
+        container,
+        {
+          value: [
+            ''
+          ].join('\n'),
+          language: 'gamemaker',
+          theme: 'vs-dark'
+        }
       )
+      setupAll(editor, dispatch);
+      dispatch('loaded', {editor, monaco})
 			// createEditor(mode || 'svelte').then(() => {
 			// 	if (editor) editor.setValue(code || '');
       // });
@@ -32,21 +46,28 @@
           container,
           {
             value: [
-              'var thing = 12345678.98765;'
+              ''
             ].join('\n'),
-            language: 'gamemaker'
+            language: 'gamemaker',
+            theme: 'vs-dark'
           }
         )
-        window['editor'] = editor;
+        setupAll(editor, dispatch);
+        dispatch('loaded', {editor, monaco})
       });
 		}
 		return () => {
 			destroyed = true;
-			// if (editor) editor.toTextArea();
 		}
   });
-  //butts2
 </script>
 
-<div class="monaco-container" bind:this={container} style="height: 500px; text-align: left">
+<div class="monaco-container" bind:this={container} {style} >
 </div>
+
+<style>
+  .monaco-container {
+    height: 100%;
+    width: 100%;
+  }
+</style>

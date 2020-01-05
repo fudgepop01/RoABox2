@@ -124,11 +124,12 @@
 
   import Actions from './actions.svelte';
 
+  export let timelineWidth = 500;
+
   let playing;
   let windowBoundaries = [];
   let audio = true;
   let timelineScale = 10;
-  let timelineWidth = 500;
 
   let timelineContainer;
 
@@ -164,6 +165,7 @@
     background-color: grey;
     position: relative;
     user-select: none;
+    width: 100%;
   }
 
   .toolbar {

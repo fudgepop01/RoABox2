@@ -59,7 +59,7 @@ import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
 // import 'monaco-editor/esm/vs/basic-languages/go/go.contribution.js';
 // import 'monaco-editor/esm/vs/basic-languages/handlebars/handlebars.contribution.js';
 // import 'monaco-editor/esm/vs/basic-languages/html/html.contribution.js';
-// import 'monaco-editor/esm/vs/basic-languages/ini/ini.contribution.js';
+import 'monaco-editor/esm/vs/basic-languages/ini/ini.contribution.js';
 // import 'monaco-editor/esm/vs/basic-languages/java/java.contribution.js';
 // import 'monaco-editor/esm/vs/basic-languages/less/less.contribution.js';
 // import 'monaco-editor/esm/vs/basic-languages/lua/lua.contribution.js';
@@ -101,7 +101,6 @@ self.MonacoEnvironment = {
 monaco.languages.register({
 	id: 'gamemaker',
 	extensions: ['.gml'],
-
 })
 monaco.languages.setMonarchTokensProvider('gamemaker', gmlDef);
 
