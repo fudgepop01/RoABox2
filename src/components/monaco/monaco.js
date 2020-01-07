@@ -90,7 +90,7 @@ import 'monaco-editor/esm/vs/basic-languages/ini/ini.contribution.js';
 // import 'monaco-editor/esm/vs/basic-languages/typescript/typescript.contribution';
 
 import gmlDef from './monarch-gml';
-
+import gmlRoAfunctions from './roaFunctions.js'
 
 self.MonacoEnvironment = {
 	getWorkerUrl: function (moduleId, label) {
@@ -103,5 +103,12 @@ monaco.languages.register({
 	extensions: ['.gml'],
 })
 monaco.languages.setMonarchTokensProvider('gamemaker', gmlDef);
+monaco.languages.registerCompletionItemProvider('gamemaker', {
+	provideCompletionItems(model, position) {
+		return {
+			suggestions: gmlRoAfunctions(monaco)
+		}
+	}
+})
 
 export default monaco;

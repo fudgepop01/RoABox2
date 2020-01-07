@@ -17,5 +17,6 @@ export const addSaveFunction = (editor, dispatch) => {
 }
 
 export const setupAll = (editor, dispatch) =>{
+  // addFunctionAutocompletion(editor);
   addSaveFunction(editor, dispatch);
 }
