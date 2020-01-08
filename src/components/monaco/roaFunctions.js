@@ -13,7 +13,9 @@ import PLAYER_VARIABLES from './snippets/variables/playerVariables';
 import ATTACK_INDEXES from './snippets/variables/attackIndexes';
 import ATTACK_GRID_INDEXES from './snippets/variables/attackGridIndexes';
 import HITBOX_VARIABLES from './snippets/variables/hitboxVariables';
-import HITBOX_GRID_INDEXES from './snippets/variables/hitboxVariables';
+import HITBOX_GRID_INDEXES from './snippets/variables/hitboxGridIndexes';
+
+import BUILTINS from './snippets/Builtins';
 
 export default (monaco) => {
   return [
@@ -32,6 +34,8 @@ export default (monaco) => {
     ...ATTACK_INDEXES(monaco),
     ...ATTACK_GRID_INDEXES(monaco),
     ...HITBOX_VARIABLES(monaco),
-    ...HITBOX_GRID_INDEXES(monaco)
+    ...HITBOX_GRID_INDEXES(monaco),
+
+    ...BUILTINS(monaco)
   ]
 }

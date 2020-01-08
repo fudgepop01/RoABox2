@@ -1,6 +1,6 @@
 export default (monaco) => {
   const indexes = [
-    ['HG_PARENT_HITBOX','If HG_PARENT_HITBOX is anything other than 0, then it will inherit all values from the hitbox with index: HG_PARENT_HITBOX for all properties except the following: HG_HITBOX_TYPE\nHG_WINDOW\nHG_WINDOW_CREATION_FRAME\nHG_LIFETIME\nHG_HITBOX_X\nHG_HITBOX_Y\nHG_HITBOX_GROUP']
+    ['HG_PARENT_HITBOX','If HG_PARENT_HITBOX is anything other than 0, then it will inherit all values from the hitbox with index: HG_PARENT_HITBOX for all properties except the following: HG_HITBOX_TYPE\nHG_WINDOW\nHG_WINDOW_CREATION_FRAME\nHG_LIFETIME\nHG_HITBOX_X\nHG_HITBOX_Y\nHG_HITBOX_GROUP'],
     ['HG_HITBOX_TYPE','[type] 1 = Physical attack\n2 = Projectile'],
     ['HG_WINDOW','The attack window in which the hitbox is created'],
     ['HG_WINDOW_CREATION_FRAME','The frame in which the hitbox is created, relative to the start of the attack window'],
@@ -53,8 +53,7 @@ export default (monaco) => {
     ['HG_PROJECTILE_PARRY_STUN','[projectile_parry_stun] Whether parrying the projectile will cause the owner to go into parry stun or not'],
     ['HG_PROJECTILE_DOES_NOT_REFLECT','[does_not_reflect] If true, the projectile will not reflect or change ownership when parried'],
     ['HG_PROJECTILE_IS_TRANSCENDENT','[transcendent] If true, the projectile will not be breakable by other hitboxes'],
-    ['HG_PROJECTILE_DESTROY_EFFECT','[destory_fx] The visual effect to use when the projectile is destroyed'],
-
+    ['HG_PROJECTILE_DESTROY_EFFECT','[destory_fx] The visual effect to use when the projectile is destroyed']
   ]
 
   return [

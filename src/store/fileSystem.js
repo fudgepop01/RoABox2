@@ -196,6 +196,17 @@ const fileSystemFactory = () => {
         zipAndDownload(files, path.substring(path.lastIndexOf('/') + 1), path)
       }
     },
+    async getAllScripts() {
+      let item = {
+        type: 'folder',
+        name: 'characters',
+        path: '.',
+        children: get(myStore)
+      }
+      const files = flattenFiles(item);
+
+      return files.filter((file) => file.extension === 'gml');
+    },
     async downloadAllAsZip() {
       let item = {
         type: 'folder',

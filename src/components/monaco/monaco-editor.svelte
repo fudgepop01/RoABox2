@@ -5,60 +5,58 @@
   monaco_promise = import('./monaco.js');
   monaco_promise.then(mod => {
     _monaco = mod.default;
+    return mod.default;
   })
 </script>
 
 <script>
   import { onMount, createEventDispatcher } from 'svelte';
 
-  import { setupAll } from './commands.js';
+  import { setupMain, setupParams } from './commands.js';
+  import editors from '../../store/editors.js';
 
   export let style;
+  export let kind;
 
   let monaco;
   let container;
   let editor;
 
   let dispatch = createEventDispatcher();
-  onMount(() => {
-		if (_monaco) {
-      monaco = _monaco;
+
+  const setup = async (kind) => {
+    if (_monaco) monaco = _monaco;
+    else monaco = (await monaco_promise).default;
+
+    if (kind === 'param') {
       editor = monaco.editor.create(
         container,
         {
-          value: [
-            ''
-          ].join('\n'),
+          value: '; variables parsed from the character\'s code will appear here',
+          language: 'ini',
+          theme: 'vs-dark'
+        }
+      );
+      setupParams(editor, dispatch);
+      editors.paramEditor = editor;
+
+    } else if (kind === 'main') {
+      editor = monaco.editor.create(
+        container,
+        {
+          value: '',
           language: 'gamemaker',
           theme: 'vs-dark'
         }
-      )
-      setupAll(editor, dispatch);
-      dispatch('loaded', {editor, monaco})
-			// createEditor(mode || 'svelte').then(() => {
-			// 	if (editor) editor.setValue(code || '');
-      // });
-		} else {
-			monaco_promise.then(async mod => {
-        console.log(container);
-        monaco = mod.default;
-        editor = monaco.editor.create(
-          container,
-          {
-            value: [
-              ''
-            ].join('\n'),
-            language: 'gamemaker',
-            theme: 'vs-dark'
-          }
-        )
-        setupAll(editor, dispatch);
-        dispatch('loaded', {editor, monaco})
-      });
-		}
-		return () => {
-			destroyed = true;
-		}
+      );
+      setupMain(editor, dispatch);
+      editors.mainEditor = editor;
+    }
+    editors.monaco = monaco;
+  }
+
+  onMount(() => {
+    setup(kind);
   });
 </script>
 

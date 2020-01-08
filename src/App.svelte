@@ -1,8 +1,14 @@
 <div id="app">
   <div class="horizontal">
-    <div class="editor-container">
-      <Monaco style="height: 100%" on:loaded={(evt) => ({editor, monaco} = evt.detail)} on:saveFile={saveFile} />
+    <div class="vertical">
+      <div class="editor-container">
+        <Monaco kind="main" style="height: 100%" on:saveFile={saveFile} on:genAST={genGmlAST}/>
+      </div>
+      <div class="variable-editor">
+        <Monaco kind="param" style="height: 100%" on:updateParams={updateParams} />
+      </div>
     </div>
+
     <div class="vertical right-side">
       <div class="horizontal preview-section">
         <div class="vertical">
@@ -18,12 +24,6 @@
       </div>
     </div>
   </div>
-
-  <!-- <div id="prompts" class="{prompt !== 'NONE' ? 'active' : ''}">
-    {#if prompt !== 'NONE'}
-      <svelte:component this={prompt} on:continue={(evt) => prompt = evt.detail}></svelte:component>
-    {/if}
-  </div> -->
 </div>
 
 <script>
@@ -33,38 +33,13 @@
   import Monaco from './components/monaco/monaco-editor.svelte';
   import Timeline from './components/timeline/Timeline.svelte';
 
-  import Begin from './prompts/begin.svelte';
-  let prompt = Begin;
-  let editor;
-  let monaco;
+  import { saveFile, handleFileOpen } from './util/FileIO.js';
+  import genGmlAST from './util/GMLParser/extractData.js';
+
   let tlc;
-  const openFiles = {};
 
-  const saveFile = (evt) => {
-    openFiles.__current__.data = editor.getValue();
-    openFiles.__current__.dirty = false;
-    delete openFiles[openFiles.__current__.name];
-  }
-
-  const handleFileOpen = (evt) => {
-    const file = evt.detail;
-
-    if (file.type === 'file' && ['gml', 'ini'].includes(file.extension)) {
-      if (openFiles.__current__ === file) return;
-      if (openFiles.__current__ && editor.getValue() !== openFiles.__current__.data) {
-        openFiles[openFiles.__current__.name] = editor.getValue();
-        openFiles.__current__.dirty = true;
-      }
-
-      openFiles.__current__ = file;
-      if (openFiles[openFiles.__current__.name]) editor.setValue(openFiles[openFiles.__current__.name]);
-      else editor.setValue(file.data);
-
-      switch (file.extension) {
-        case 'gml': monaco.editor.setModelLanguage(editor.getModel(), 'gamemaker'); break;
-        case 'ini': monaco.editor.setModelLanguage(editor.getModel(), 'ini'); break;
-      }
-    }
+  const updateParams = () => {
+    console.log('updated params');
   }
 </script>
 
@@ -107,7 +82,8 @@
   .vertical { flex-direction: column; }
 
   .right-side { width: 800px; }
-  .editor-container { flex-grow: 1; }
+  .editor-container { height: 500px; }
+  .variable-editor { flex-grow: 1; }
   .preview-section { height: 500px; }
   .timeline-container { height: 75px; border: 1px solid black; }
   .toolbar-container { width: 50px; }
