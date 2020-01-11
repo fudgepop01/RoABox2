@@ -2,17 +2,48 @@ import { fileSystem } from '../../store/fileSystem';
 import editors from '../../store/editors.js';
 import getData from './instructions';
 
-const extractData = (compiled) => {
-  const scripts = compiled.scripts;
+const initialize = (compiled) => {
+  const scripts = compiled.scriptMap;
+  const initOrder = [
+    'init',
+    'load',
+    'bair',
+    'dair',
+    'dattack',
+    'dspecial',
+    'dstrong',
+    'dtilt',
+    'fair',
+    'fspecial',
+    'fstrong',
+    'ftilt',
+    'jab',
+    'nair',
+    'nspecial',
+    'taunt',
+    'uair',
+    'uspecial',
+    'ustrong',
+    'utilt'
+  ];
 
-  const out = {
-    attacks: {},
-    variables: {}
-  };
-  for (const script of scripts) {
-    getData(script.node, out);
+  const out = {};
+  for (const scriptName of initOrder) {
+    getData(scripts['_' + scriptName].node, out);
   }
+
   return out;
+}
+
+const nextState = (compiled, gameState) => {
+  const scriptOrder = [
+    'update',
+    'animation',
+    'pre_draw',
+    'post_draw'
+  ];
+
+
 }
 
 export default async () => {
@@ -24,10 +55,10 @@ export default async () => {
     sources.push(new gmlive.source(`_${script.name}`, script.data));
   }
   const compiled = gmlive.compile(sources);
-  const data = extractData(compiled);
+  const gameState = initialize(compiled);
 
   console.log(compiled);
-  console.log(data);
+  console.log(gameState);
 
   // editors.paramEditor.setValue
 }
