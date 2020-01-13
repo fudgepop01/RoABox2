@@ -27,9 +27,16 @@ const initialize = (compiled) => {
     'utilt'
   ];
 
-  const out = {};
+  const out = {
+    scopes: [],
+    instances: {
+      self: {
+        fields: {}
+      }
+    },
+  };
   for (const scriptName of initOrder) {
-    getData(scripts['_' + scriptName].node, out);
+    if (scripts['_' + scriptName]) getData(scripts['_' + scriptName].node, out);
   }
 
   return out;

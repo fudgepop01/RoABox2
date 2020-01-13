@@ -1109,6 +1109,7 @@
 						x = this.outNode;
 						this.offset += 1;
 						if (this.buildExpr(0)) return true;
+						// ANCHOR SetOp
 						this.outNode = ast_GmlNodeDef_SetOp(_g118[2], _g118[3], x, this.outNode);
 					} else if (!ast_GmlNodeTools_isStatement(this.outNode)) return this.expectNode("a statement", this.outNode);
 				} else if (!ast_GmlNodeTools_isStatement(this.outNode)) return this.expectNode("a statement", this.outNode);
@@ -3786,308 +3787,309 @@
 		} else return null;
 	}
 
-	function ast_GmlNodeTools_clone(q) {
-		var xw, i, n, fi;
-		var d = q[2];
-		var _g = q;
-		switch (_g[1]) {
+	function ast_GmlNodeTools_clone(gmlNode) {
+		var nestedValues, i, n, nvPosition;
+		var gmlPos = gmlNode[2];
+		var gmlNodeRef = gmlNode;
+		switch (gmlNodeRef[1]) {
 			case 0:
-				return ast_GmlNodeDef_Undefined(d);
+				return ast_GmlNodeDef_Undefined(gmlPos);
 			case 3:
-				return ast_GmlNodeDef_EnumCtr(d, _g[3], _g[4]);
+				return ast_GmlNodeDef_EnumCtr(gmlPos, gmlNodeRef[3], gmlNodeRef[4]);
 			case 5:
-				xw = _g[4].slice();
-				fi = xw.length;
-				while (--fi >= 0) {
-					xw[fi] = ast_GmlNodeTools_clone(xw[fi]);
+				nestedValues = gmlNodeRef[4].slice();
+				nvPosition = nestedValues.length;
+				while (--nvPosition >= 0) {
+					nestedValues[nvPosition] = ast_GmlNodeTools_clone(nestedValues[nvPosition]);
 				}
-				return ast_GmlNodeDef_ObjectDecl(d, _g[3].slice(0), xw);
+				return ast_GmlNodeDef_ObjectDecl(gmlPos, gmlNodeRef[3].slice(0), nestedValues);
 			case 6:
-				return ast_GmlNodeDef_EnsureArray(d, ast_GmlNodeTools_clone(_g[3]));
+				return ast_GmlNodeDef_EnsureArray(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]));
 			case 7:
-				return ast_GmlNodeDef_Ident(d, _g[3]);
+				return ast_GmlNodeDef_Ident(gmlPos, gmlNodeRef[3]);
 			case 8:
-				return ast_GmlNodeDef_Self(d);
+				return ast_GmlNodeDef_Self(gmlPos);
 			case 2:
-				return ast_GmlNodeDef_CString(d, _g[3]);
+				return ast_GmlNodeDef_CString(gmlPos, gmlNodeRef[3]);
 			case 10:
-				return ast_GmlNodeDef_GlobalRef(d);
+				return ast_GmlNodeDef_GlobalRef(gmlPos);
 			case 11:
-				return ast_GmlNodeDef_Script(d, _g[3]);
+				return ast_GmlNodeDef_Script(gmlPos, gmlNodeRef[3]);
 			case 12:
-				return ast_GmlNodeDef_Const(d, _g[3]);
+				return ast_GmlNodeDef_Const(gmlPos, gmlNodeRef[3]);
 			case 14:
-				return ast_GmlNodeDef_ArgIndex(d, ast_GmlNodeTools_clone(_g[3]));
+				return ast_GmlNodeDef_ArgIndex(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]));
 			case 15:
-				return ast_GmlNodeDef_ArgCount(d);
+				return ast_GmlNodeDef_ArgCount(gmlPos);
 			case 16:
-				xw = _g[4].slice();
-				fi = xw.length;
-				while (--fi >= 0) {
-					xw[fi] = ast_GmlNodeTools_clone(xw[fi]);
+				nestedValues = gmlNodeRef[4].slice();
+				nvPosition = nestedValues.length;
+				while (--nvPosition >= 0) {
+					nestedValues[nvPosition] = ast_GmlNodeTools_clone(nestedValues[nvPosition]);
 				}
-				return ast_GmlNodeDef_Call(d, ast_GmlNodeTools_clone(_g[3]), xw);
+				return ast_GmlNodeDef_Call(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), nestedValues);
 			case 17:
-				xw = _g[4].slice();
-				fi = xw.length;
-				while (--fi >= 0) {
-					xw[fi] = ast_GmlNodeTools_clone(xw[fi]);
+				nestedValues = gmlNodeRef[4].slice();
+				nvPosition = nestedValues.length;
+				while (--nvPosition >= 0) {
+					nestedValues[nvPosition] = ast_GmlNodeTools_clone(nestedValues[nvPosition]);
 				}
-				return ast_GmlNodeDef_CallScript(d, _g[3], xw);
+				return ast_GmlNodeDef_CallScript(gmlPos, gmlNodeRef[3], nestedValues);
 			case 18:
-				xw = _g[5].slice();
-				fi = xw.length;
-				while (--fi >= 0) {
-					xw[fi] = ast_GmlNodeTools_clone(xw[fi]);
+				nestedValues = gmlNodeRef[5].slice();
+				nvPosition = nestedValues.length;
+				while (--nvPosition >= 0) {
+					nestedValues[nvPosition] = ast_GmlNodeTools_clone(nestedValues[nvPosition]);
 				}
-				return ast_GmlNodeDef_CallScriptAt(d, ast_GmlNodeTools_clone(_g[3]), _g[4], xw);
+				return ast_GmlNodeDef_CallScriptAt(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), gmlNodeRef[4], nestedValues);
 			case 19:
-				xw = _g[4].slice();
-				fi = xw.length;
-				while (--fi >= 0) {
-					xw[fi] = ast_GmlNodeTools_clone(xw[fi]);
+				nestedValues = gmlNodeRef[4].slice();
+				nvPosition = nestedValues.length;
+				while (--nvPosition >= 0) {
+					nestedValues[nvPosition] = ast_GmlNodeTools_clone(nestedValues[nvPosition]);
 				}
-				return ast_GmlNodeDef_CallScriptId(d, ast_GmlNodeTools_clone(_g[3]), xw);
+				return ast_GmlNodeDef_CallScriptId(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), nestedValues);
 			case 20:
-				xw = _g[5].slice();
-				fi = xw.length;
-				while (--fi >= 0) {
-					xw[fi] = ast_GmlNodeTools_clone(xw[fi]);
+				nestedValues = gmlNodeRef[5].slice();
+				nvPosition = nestedValues.length;
+				while (--nvPosition >= 0) {
+					nestedValues[nvPosition] = ast_GmlNodeTools_clone(nestedValues[nvPosition]);
 				}
-				return ast_GmlNodeDef_CallField(d, ast_GmlNodeTools_clone(_g[3]), _g[4], xw);
+				return ast_GmlNodeDef_CallField(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), gmlNodeRef[4], nestedValues);
 			case 21:
-				xw = _g[4].slice();
-				fi = xw.length;
-				while (--fi >= 0) {
-					xw[fi] = ast_GmlNodeTools_clone(xw[fi]);
+				nestedValues = gmlNodeRef[4].slice();
+				nvPosition = nestedValues.length;
+				while (--nvPosition >= 0) {
+					nestedValues[nvPosition] = ast_GmlNodeTools_clone(nestedValues[nvPosition]);
 				}
-				return ast_GmlNodeDef_CallFunc(d, _g[3], xw);
+				return ast_GmlNodeDef_CallFunc(gmlPos, gmlNodeRef[3], nestedValues);
 			case 22:
-				xw = _g[5].slice();
-				fi = xw.length;
-				while (--fi >= 0) {
-					xw[fi] = ast_GmlNodeTools_clone(xw[fi]);
+				nestedValues = gmlNodeRef[5].slice();
+				nvPosition = nestedValues.length;
+				while (--nvPosition >= 0) {
+					nestedValues[nvPosition] = ast_GmlNodeTools_clone(nestedValues[nvPosition]);
 				}
-				return ast_GmlNodeDef_CallFuncAt(d, ast_GmlNodeTools_clone(_g[3]), _g[4], xw);
+				return ast_GmlNodeDef_CallFuncAt(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), gmlNodeRef[4], nestedValues);
 			case 23:
-				return ast_GmlNodeDef_Prefix(d, ast_GmlNodeTools_clone(_g[3]), _g[4]);
+				return ast_GmlNodeDef_Prefix(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), gmlNodeRef[4]);
 			case 24:
-				return ast_GmlNodeDef_Postfix(d, ast_GmlNodeTools_clone(_g[3]), _g[4]);
+				return ast_GmlNodeDef_Postfix(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), gmlNodeRef[4]);
 			case 25:
-				return ast_GmlNodeDef_UnOp(d, ast_GmlNodeTools_clone(_g[3]), _g[4]);
+				return ast_GmlNodeDef_UnOp(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), gmlNodeRef[4]);
 			case 26:
-				return ast_GmlNodeDef_BinOp(d, _g[3], ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]));
+				return ast_GmlNodeDef_BinOp(gmlPos, gmlNodeRef[3], ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]));
 			case 27:
-				return ast_GmlNodeDef_SetOp(d, _g[3], ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]));
+				return ast_GmlNodeDef_SetOp(gmlPos, gmlNodeRef[3], ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]));
 			case 28:
-				return ast_GmlNodeDef_ToBool(d, ast_GmlNodeTools_clone(_g[3]));
+				return ast_GmlNodeDef_ToBool(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]));
 			case 9:
-				return ast_GmlNodeDef_Other(d);
+				return ast_GmlNodeDef_Other(gmlPos);
 			case 30:
-				return ast_GmlNodeDef_In(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), _g[5]);
+				return ast_GmlNodeDef_In(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), gmlNodeRef[5]);
 			case 31:
-				return ast_GmlNodeDef_Local(d, _g[3]);
+				return ast_GmlNodeDef_Local(gmlPos, gmlNodeRef[3]);
 			case 32:
-				return ast_GmlNodeDef_LocalSet(d, _g[3], ast_GmlNodeTools_clone(_g[4]));
+				return ast_GmlNodeDef_LocalSet(gmlPos, gmlNodeRef[3], ast_GmlNodeTools_clone(gmlNodeRef[4]));
 			case 33:
-				return ast_GmlNodeDef_LocalAop(d, _g[3], _g[4], ast_GmlNodeTools_clone(_g[5]));
+				// ANCHOR LocalAop
+				return ast_GmlNodeDef_LocalAop(gmlPos, gmlNodeRef[3], gmlNodeRef[4], ast_GmlNodeTools_clone(gmlNodeRef[5]));
 			case 34:
-				return ast_GmlNodeDef_Global(d, _g[3]);
+				return ast_GmlNodeDef_Global(gmlPos, gmlNodeRef[3]);
 			case 35:
-				return ast_GmlNodeDef_GlobalSet(d, _g[3], ast_GmlNodeTools_clone(_g[4]));
+				return ast_GmlNodeDef_GlobalSet(gmlPos, gmlNodeRef[3], ast_GmlNodeTools_clone(gmlNodeRef[4]));
 			case 36:
-				return ast_GmlNodeDef_GlobalAop(d, _g[3], _g[4], ast_GmlNodeTools_clone(_g[5]));
+				return ast_GmlNodeDef_GlobalAop(gmlPos, gmlNodeRef[3], gmlNodeRef[4], ast_GmlNodeTools_clone(gmlNodeRef[5]));
 			case 37:
-				return ast_GmlNodeDef_Field(d, ast_GmlNodeTools_clone(_g[3]), _g[4]);
+				return ast_GmlNodeDef_Field(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), gmlNodeRef[4]);
 			case 38:
-				return ast_GmlNodeDef_FieldSet(d, ast_GmlNodeTools_clone(_g[3]), _g[4], ast_GmlNodeTools_clone(_g[5]));
+				return ast_GmlNodeDef_FieldSet(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), gmlNodeRef[4], ast_GmlNodeTools_clone(gmlNodeRef[5]));
 			case 39:
-				return ast_GmlNodeDef_FieldAop(d, ast_GmlNodeTools_clone(_g[3]), _g[4], _g[5], ast_GmlNodeTools_clone(_g[6]));
+				return ast_GmlNodeDef_FieldAop(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), gmlNodeRef[4], gmlNodeRef[5], ast_GmlNodeTools_clone(gmlNodeRef[6]));
 			case 41:
-				return ast_GmlNodeDef_EnvSet(d, _g[3], ast_GmlNodeTools_clone(_g[4]));
+				return ast_GmlNodeDef_EnvSet(gmlPos, gmlNodeRef[3], ast_GmlNodeTools_clone(gmlNodeRef[4]));
 			case 42:
-				return ast_GmlNodeDef_EnvAop(d, _g[3], _g[4], ast_GmlNodeTools_clone(_g[5]));
+				return ast_GmlNodeDef_EnvAop(gmlPos, gmlNodeRef[3], gmlNodeRef[4], ast_GmlNodeTools_clone(gmlNodeRef[5]));
 			case 43:
-				return ast_GmlNodeDef_EnvFd(d, ast_GmlNodeTools_clone(_g[3]), _g[4]);
+				return ast_GmlNodeDef_EnvFd(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), gmlNodeRef[4]);
 			case 44:
-				return ast_GmlNodeDef_EnvFdSet(d, ast_GmlNodeTools_clone(_g[3]), _g[4], ast_GmlNodeTools_clone(_g[5]));
+				return ast_GmlNodeDef_EnvFdSet(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), gmlNodeRef[4], ast_GmlNodeTools_clone(gmlNodeRef[5]));
 			case 45:
-				return ast_GmlNodeDef_EnvFdAop(d, ast_GmlNodeTools_clone(_g[3]), _g[4], _g[5], ast_GmlNodeTools_clone(_g[6]));
+				return ast_GmlNodeDef_EnvFdAop(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), gmlNodeRef[4], gmlNodeRef[5], ast_GmlNodeTools_clone(gmlNodeRef[6]));
 			case 46:
-				return ast_GmlNodeDef_Env1d(d, _g[3], ast_GmlNodeTools_clone(_g[4]));
+				return ast_GmlNodeDef_Env1d(gmlPos, gmlNodeRef[3], ast_GmlNodeTools_clone(gmlNodeRef[4]));
 			case 47:
-				return ast_GmlNodeDef_Env1dSet(d, _g[3], ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]));
+				return ast_GmlNodeDef_Env1dSet(gmlPos, gmlNodeRef[3], ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]));
 			case 48:
-				return ast_GmlNodeDef_Env1dAop(d, _g[3], ast_GmlNodeTools_clone(_g[4]), _g[5], ast_GmlNodeTools_clone(_g[6]));
+				return ast_GmlNodeDef_Env1dAop(gmlPos, gmlNodeRef[3], ast_GmlNodeTools_clone(gmlNodeRef[4]), gmlNodeRef[5], ast_GmlNodeTools_clone(gmlNodeRef[6]));
 			case 49:
-				return ast_GmlNodeDef_Index(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]));
+				return ast_GmlNodeDef_Index(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]));
 			case 50:
-				return ast_GmlNodeDef_IndexSet(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]));
+				return ast_GmlNodeDef_IndexSet(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]));
 			case 51:
-				return ast_GmlNodeDef_IndexAop(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), _g[5], ast_GmlNodeTools_clone(_g[6]));
+				return ast_GmlNodeDef_IndexAop(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), gmlNodeRef[5], ast_GmlNodeTools_clone(gmlNodeRef[6]));
 			case 52:
-				return ast_GmlNodeDef_IndexPrefix(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), _g[5]);
+				return ast_GmlNodeDef_IndexPrefix(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), gmlNodeRef[5]);
 			case 53:
-				return ast_GmlNodeDef_IndexPostfix(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), _g[5]);
+				return ast_GmlNodeDef_IndexPostfix(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), gmlNodeRef[5]);
 			case 54:
-				return ast_GmlNodeDef_Index2d(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]));
+				return ast_GmlNodeDef_Index2d(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]));
 			case 55:
-				return ast_GmlNodeDef_Index2dSet(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]), ast_GmlNodeTools_clone(_g[6]));
+				return ast_GmlNodeDef_Index2dSet(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]), ast_GmlNodeTools_clone(gmlNodeRef[6]));
 			case 56:
-				return ast_GmlNodeDef_Index2dAop(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]), _g[6], ast_GmlNodeTools_clone(_g[7]));
+				return ast_GmlNodeDef_Index2dAop(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]), gmlNodeRef[6], ast_GmlNodeTools_clone(gmlNodeRef[7]));
 			case 57:
-				return ast_GmlNodeDef_Index2dPrefix(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]), _g[6]);
+				return ast_GmlNodeDef_Index2dPrefix(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]), gmlNodeRef[6]);
 			case 58:
-				return ast_GmlNodeDef_Index2dPostfix(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]), _g[6]);
+				return ast_GmlNodeDef_Index2dPostfix(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]), gmlNodeRef[6]);
 			case 59:
-				return ast_GmlNodeDef_RawId(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]));
+				return ast_GmlNodeDef_RawId(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]));
 			case 60:
-				return ast_GmlNodeDef_RawIdSet(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]));
+				return ast_GmlNodeDef_RawIdSet(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]));
 			case 61:
-				return ast_GmlNodeDef_RawIdAop(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), _g[5], ast_GmlNodeTools_clone(_g[6]));
+				return ast_GmlNodeDef_RawIdAop(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), gmlNodeRef[5], ast_GmlNodeTools_clone(gmlNodeRef[6]));
 			case 62:
-				return ast_GmlNodeDef_RawIdPrefix(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), _g[5]);
+				return ast_GmlNodeDef_RawIdPrefix(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), gmlNodeRef[5]);
 			case 63:
-				return ast_GmlNodeDef_RawIdPostfix(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), _g[5]);
+				return ast_GmlNodeDef_RawIdPostfix(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), gmlNodeRef[5]);
 			case 64:
-				return ast_GmlNodeDef_RawId2d(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]));
+				return ast_GmlNodeDef_RawId2d(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]));
 			case 65:
-				return ast_GmlNodeDef_RawId2dSet(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]), ast_GmlNodeTools_clone(_g[6]));
+				return ast_GmlNodeDef_RawId2dSet(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]), ast_GmlNodeTools_clone(gmlNodeRef[6]));
 			case 66:
-				return ast_GmlNodeDef_RawId2dAop(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]), _g[6], ast_GmlNodeTools_clone(_g[7]));
+				return ast_GmlNodeDef_RawId2dAop(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]), gmlNodeRef[6], ast_GmlNodeTools_clone(gmlNodeRef[7]));
 			case 67:
-				return ast_GmlNodeDef_RawId2dPrefix(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]), _g[6]);
+				return ast_GmlNodeDef_RawId2dPrefix(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]), gmlNodeRef[6]);
 			case 68:
-				return ast_GmlNodeDef_RawId2dPostfix(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]), _g[6]);
+				return ast_GmlNodeDef_RawId2dPostfix(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]), gmlNodeRef[6]);
 			case 69:
-				return ast_GmlNodeDef_DsList(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]));
+				return ast_GmlNodeDef_DsList(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]));
 			case 70:
-				return ast_GmlNodeDef_DsListSet(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]));
+				return ast_GmlNodeDef_DsListSet(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]));
 			case 71:
-				return ast_GmlNodeDef_DsListAop(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), _g[5], ast_GmlNodeTools_clone(_g[6]));
+				return ast_GmlNodeDef_DsListAop(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), gmlNodeRef[5], ast_GmlNodeTools_clone(gmlNodeRef[6]));
 			case 72:
-				return ast_GmlNodeDef_DsListPrefix(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), _g[5]);
+				return ast_GmlNodeDef_DsListPrefix(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), gmlNodeRef[5]);
 			case 73:
-				return ast_GmlNodeDef_DsListPostfix(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), _g[5]);
+				return ast_GmlNodeDef_DsListPostfix(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), gmlNodeRef[5]);
 			case 74:
-				return ast_GmlNodeDef_DsMap(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]));
+				return ast_GmlNodeDef_DsMap(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]));
 			case 75:
-				return ast_GmlNodeDef_DsMapSet(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]));
+				return ast_GmlNodeDef_DsMapSet(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]));
 			case 76:
-				return ast_GmlNodeDef_DsMapAop(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), _g[5], ast_GmlNodeTools_clone(_g[6]));
+				return ast_GmlNodeDef_DsMapAop(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), gmlNodeRef[5], ast_GmlNodeTools_clone(gmlNodeRef[6]));
 			case 77:
-				return ast_GmlNodeDef_DsMapPrefix(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), _g[5]);
+				return ast_GmlNodeDef_DsMapPrefix(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), gmlNodeRef[5]);
 			case 78:
-				return ast_GmlNodeDef_DsMapPostfix(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), _g[5]);
+				return ast_GmlNodeDef_DsMapPostfix(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), gmlNodeRef[5]);
 			case 79:
-				return ast_GmlNodeDef_DsGrid(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]));
+				return ast_GmlNodeDef_DsGrid(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]));
 			case 80:
-				return ast_GmlNodeDef_DsGridSet(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]), ast_GmlNodeTools_clone(_g[6]));
+				return ast_GmlNodeDef_DsGridSet(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]), ast_GmlNodeTools_clone(gmlNodeRef[6]));
 			case 81:
-				return ast_GmlNodeDef_DsGridAop(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]), _g[6], ast_GmlNodeTools_clone(_g[7]));
+				return ast_GmlNodeDef_DsGridAop(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]), gmlNodeRef[6], ast_GmlNodeTools_clone(gmlNodeRef[7]));
 			case 82:
-				return ast_GmlNodeDef_DsGridPrefix(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]), _g[6]);
+				return ast_GmlNodeDef_DsGridPrefix(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]), gmlNodeRef[6]);
 			case 83:
-				return ast_GmlNodeDef_DsGridPostfix(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]), _g[6]);
+				return ast_GmlNodeDef_DsGridPostfix(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]), gmlNodeRef[6]);
 			case 84:
-				return ast_GmlNodeDef_VarDecl(d, _g[3], ast_GmlNodeTools_cloneOpt(_g[4]));
+				return ast_GmlNodeDef_VarDecl(gmlPos, gmlNodeRef[3], ast_GmlNodeTools_cloneOpt(gmlNodeRef[4]));
 			case 85:
-				xw = _g[3].slice();
-				fi = xw.length;
-				while (--fi >= 0) {
-					xw[fi] = ast_GmlNodeTools_clone(xw[fi]);
+				nestedValues = gmlNodeRef[3].slice();
+				nvPosition = nestedValues.length;
+				while (--nvPosition >= 0) {
+					nestedValues[nvPosition] = ast_GmlNodeTools_clone(nestedValues[nvPosition]);
 				}
-				return ast_GmlNodeDef_Block(d, xw);
+				return ast_GmlNodeDef_Block(gmlPos, nestedValues);
 			case 86:
-				return ast_GmlNodeDef_IfThen(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_cloneOpt(_g[5]));
+				return ast_GmlNodeDef_IfThen(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_cloneOpt(gmlNodeRef[5]));
 			case 87:
-				return ast_GmlNodeDef_Ternary(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]));
+				return ast_GmlNodeDef_Ternary(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]));
 			case 29:
-				return ast_GmlNodeDef_FromBool(d, ast_GmlNodeTools_clone(_g[3]));
+				return ast_GmlNodeDef_FromBool(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]));
 			case 89:
-				return ast_GmlNodeDef_Wait(d, ast_GmlNodeTools_clone(_g[3]));
+				return ast_GmlNodeDef_Wait(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]));
 			case 90:
-				return ast_GmlNodeDef_Fork(d);
+				return ast_GmlNodeDef_Fork(gmlPos);
 			case 91:
-				return ast_GmlNodeDef_While(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]));
+				return ast_GmlNodeDef_While(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]));
 			case 92:
-				return ast_GmlNodeDef_DoUntil(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]));
+				return ast_GmlNodeDef_DoUntil(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]));
 			case 93:
-				return ast_GmlNodeDef_DoWhile(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]));
+				return ast_GmlNodeDef_DoWhile(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]));
 			case 94:
-				return ast_GmlNodeDef_Repeat(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]));
+				return ast_GmlNodeDef_Repeat(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]));
 			case 95:
-				return ast_GmlNodeDef_For(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]), ast_GmlNodeTools_clone(_g[5]), ast_GmlNodeTools_clone(_g[6]));
+				return ast_GmlNodeDef_For(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]), ast_GmlNodeTools_clone(gmlNodeRef[5]), ast_GmlNodeTools_clone(gmlNodeRef[6]));
 			case 96:
-				return ast_GmlNodeDef_With(d, ast_GmlNodeTools_clone(_g[3]), ast_GmlNodeTools_clone(_g[4]));
+				return ast_GmlNodeDef_With(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), ast_GmlNodeTools_clone(gmlNodeRef[4]));
 			case 97:
-				return ast_GmlNodeDef_Once(d, ast_GmlNodeTools_clone(_g[3]));
+				return ast_GmlNodeDef_Once(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]));
 			case 98:
-				return ast_GmlNodeDef_Return(d, ast_GmlNodeTools_clone(_g[3]));
+				return ast_GmlNodeDef_Return(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]));
 			case 99:
-				return ast_GmlNodeDef_Exit(d);
+				return ast_GmlNodeDef_Exit(gmlPos);
 			case 100:
-				return ast_GmlNodeDef_Break(d);
+				return ast_GmlNodeDef_Break(gmlPos);
 			case 101:
-				return ast_GmlNodeDef_Continue(d);
+				return ast_GmlNodeDef_Continue(gmlPos);
 			case 102:
-				return ast_GmlNodeDef_Debugger(d);
+				return ast_GmlNodeDef_Debugger(gmlPos);
 			case 103:
-				return ast_GmlNodeDef_TryCatch(d, ast_GmlNodeTools_clone(_g[3]), _g[4], ast_GmlNodeTools_clone(_g[5]));
+				return ast_GmlNodeDef_TryCatch(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), gmlNodeRef[4], ast_GmlNodeTools_clone(gmlNodeRef[5]));
 			case 104:
-				return ast_GmlNodeDef_Throw(d, ast_GmlNodeTools_clone(_g[3]));
+				return ast_GmlNodeDef_Throw(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]));
 			case 105:
-				return ast_GmlNodeDef_CommentLine(d, _g[3]);
+				return ast_GmlNodeDef_CommentLine(gmlPos, gmlNodeRef[3]);
 			case 106:
-				return ast_GmlNodeDef_CommentLinePre(d, _g[3], ast_GmlNodeTools_clone(_g[4]));
+				return ast_GmlNodeDef_CommentLinePre(gmlPos, gmlNodeRef[3], ast_GmlNodeTools_clone(gmlNodeRef[4]));
 			case 107:
-				return ast_GmlNodeDef_CommentLinePost(d, ast_GmlNodeTools_clone(_g[3]), _g[4]);
+				return ast_GmlNodeDef_CommentLinePost(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), gmlNodeRef[4]);
 			case 108:
-				return ast_GmlNodeDef_CommentLineSep(d, _g[3], ast_GmlNodeTools_clone(_g[4]));
+				return ast_GmlNodeDef_CommentLineSep(gmlPos, gmlNodeRef[3], ast_GmlNodeTools_clone(gmlNodeRef[4]));
 			case 109:
-				return ast_GmlNodeDef_CommentBlock(d, _g[3]);
+				return ast_GmlNodeDef_CommentBlock(gmlPos, gmlNodeRef[3]);
 			case 110:
-				return ast_GmlNodeDef_CommentBlockPre(d, _g[3], ast_GmlNodeTools_clone(_g[4]), _g[5]);
+				return ast_GmlNodeDef_CommentBlockPre(gmlPos, gmlNodeRef[3], ast_GmlNodeTools_clone(gmlNodeRef[4]), gmlNodeRef[5]);
 			case 111:
-				return ast_GmlNodeDef_CommentBlockPost(d, ast_GmlNodeTools_clone(_g[3]), _g[4], _g[5]);
+				return ast_GmlNodeDef_CommentBlockPost(gmlPos, ast_GmlNodeTools_clone(gmlNodeRef[3]), gmlNodeRef[4], gmlNodeRef[5]);
 			case 40:
-				return ast_GmlNodeDef_Env(d, _g[3]);
+				return ast_GmlNodeDef_Env(gmlPos, gmlNodeRef[3]);
 			case 13:
-				return ast_GmlNodeDef_ArgConst(d, _g[3]);
+				return ast_GmlNodeDef_ArgConst(gmlPos, gmlNodeRef[3]);
 			case 4:
-				xw = _g[3].slice();
-				fi = xw.length;
-				while (--fi >= 0) {
-					xw[fi] = ast_GmlNodeTools_clone(xw[fi]);
+				nestedValues = gmlNodeRef[3].slice();
+				nvPosition = nestedValues.length;
+				while (--nvPosition >= 0) {
+					nestedValues[nvPosition] = ast_GmlNodeTools_clone(nestedValues[nvPosition]);
 				}
-				return ast_GmlNodeDef_ArrayDecl(d, xw);
+				return ast_GmlNodeDef_ArrayDecl(gmlPos, nestedValues);
 			case 1:
-				return ast_GmlNodeDef_Number(d, _g[3], _g[4]);
+				return ast_GmlNodeDef_Number(gmlPos, gmlNodeRef[3], gmlNodeRef[4]);
 			case 88:
-				var m = _g[4];
+				var m = gmlNodeRef[4];
 				m = m.slice();
 				n = m.length;
 				for (i = 0; i < n; ++i) {
 					var cc = m[i];
-					xw = cc.values.slice();
-					fi = xw.length;
-					while (--fi >= 0) {
-						xw[fi] = ast_GmlNodeTools_clone(xw[fi]);
+					nestedValues = cc.values.slice();
+					nvPosition = nestedValues.length;
+					while (--nvPosition >= 0) {
+						nestedValues[nvPosition] = ast_GmlNodeTools_clone(nestedValues[nvPosition]);
 					}
 					cc = {
-						values: xw,
+						values: nestedValues,
 						expr: ast_GmlNodeTools_clone(cc.expr),
 						pre: cc.pre
 					};
 					m[i] = cc;
-					xw = cc.pre.slice();
-					fi = xw.length;
-					while (--fi >= 0) {
-						xw[fi] = ast_GmlNodeTools_clone(xw[fi]);
+					nestedValues = cc.pre.slice();
+					nvPosition = nestedValues.length;
+					while (--nvPosition >= 0) {
+						nestedValues[nvPosition] = ast_GmlNodeTools_clone(nestedValues[nvPosition]);
 					}
-					cc.pre = xw;
+					cc.pre = nestedValues;
 				}
-				return ast_GmlNodeDef_Switch(_g[2], ast_GmlNodeTools_clone(_g[3]), m, ast_GmlNodeTools_cloneOpt(_g[5]));
+				return ast_GmlNodeDef_Switch(gmlNodeRef[2], ast_GmlNodeTools_clone(gmlNodeRef[3]), m, ast_GmlNodeTools_cloneOpt(gmlNodeRef[5]));
 		}
 	}
 
@@ -6238,26 +6240,26 @@
 		return ast_GmlNodeTools_seekAll(q, st, gml_SeekSetOp_resolveSetOp_rfn);
 	}
 
-	function gml_SeekSetOp_proc(q, st) {
-		var _g = q;
-		if (_g[1] == 27) {
-			var v = _g[5];
-			var x = _g[4];
-			var o = _g[3];
-			var d = _g[2];
+	function gml_SeekSetOp_proc(gmlNode, st) {
+		var gmlNodeRef = gmlNode;
+		if (gmlNodeRef[1] == 27) { // if node type == 27 (SetOp)
+			var v = gmlNodeRef[5];
+			var x = gmlNodeRef[4];
+			var opeartion = gmlNodeRef[3];
+			var d = gmlNodeRef[2];
 			var _g1 = ast_GmlNodeTools_unpack(x);
 			switch (_g1[1]) {
 				case 31:
 					var s = _g1[3];
-					if (o != -1) {
-						SfEnumTools_setTo(q, ast_GmlNodeDef_LocalAop(d, s, o, v));
-					} else SfEnumTools_setTo(q, ast_GmlNodeDef_LocalSet(d, s, v));
+					if (opeartion != -1) {
+						SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_LocalAop(d, s, opeartion, v));
+					} else SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_LocalSet(d, s, v));
 					break;
 				case 34:
 					var s1 = _g1[3];
-					if (o != -1) {
-						SfEnumTools_setTo(q, ast_GmlNodeDef_GlobalAop(d, s1, o, v));
-					} else SfEnumTools_setTo(q, ast_GmlNodeDef_GlobalSet(d, s1, v));
+					if (opeartion != -1) {
+						SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_GlobalAop(d, s1, opeartion, v));
+					} else SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_GlobalSet(d, s1, v));
 					break;
 				case 13:
 					break;
@@ -6266,9 +6268,9 @@
 				case 37:
 					var s2 = _g1[4];
 					var x1 = _g1[3];
-					if (o != -1) {
-						SfEnumTools_setTo(q, ast_GmlNodeDef_FieldAop(d, x1, s2, o, v));
-					} else SfEnumTools_setTo(q, ast_GmlNodeDef_FieldSet(d, x1, s2, v));
+					if (opeartion != -1) {
+						SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_FieldAop(d, x1, s2, opeartion, v));
+					} else SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_FieldSet(d, x1, s2, v));
 					break;
 				case 49:
 					var xw = _g1[3];
@@ -6277,22 +6279,22 @@
 					switch (_g2[1]) {
 						case 49:
 							var xi = _g2[4];
-							if (o != -1) {
-								SfEnumTools_setTo(q, ast_GmlNodeDef_IndexAop(xd3, xw, xi, o, v));
-							} else SfEnumTools_setTo(q, ast_GmlNodeDef_IndexSet(xd3, xw, xi, v));
+							if (opeartion != -1) {
+								SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_IndexAop(xd3, xw, xi, opeartion, v));
+							} else SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_IndexSet(xd3, xw, xi, v));
 							break;
 						case 54:
 							var i2 = _g2[5];
 							var i1 = _g2[4];
-							if (o != -1) {
-								SfEnumTools_setTo(q, ast_GmlNodeDef_Index2dAop(xd3, xw, i1, i2, o, v));
-							} else SfEnumTools_setTo(q, ast_GmlNodeDef_Index2dSet(xd3, xw, i1, i2, v));
+							if (opeartion != -1) {
+								SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_Index2dAop(xd3, xw, i1, i2, opeartion, v));
+							} else SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_Index2dSet(xd3, xw, i1, i2, v));
 							break;
 					}
 					gml_SeekSetOp_resolveSetOp_safe = false;
 					gml_SeekSetOp_resolveSetOp_xw = xw;
-					ast_GmlNodeTools_seekAllOut(q, st, gml_SeekSetOp_resolveSetOp_rfn, 0);
-					if (!gml_SeekSetOp_resolveSetOp_safe) SfEnumTools_setTo(q, ast_GmlNodeDef_Block(xd3, [ast_GmlNodeDef_EnsureArray(xd3, ast_GmlNodeTools_clone(xw)), ast_GmlNodeTools_clone(q)]));
+					ast_GmlNodeTools_seekAllOut(gmlNode, st, gml_SeekSetOp_resolveSetOp_rfn, 0);
+					if (!gml_SeekSetOp_resolveSetOp_safe) SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_Block(xd3, [ast_GmlNodeDef_EnsureArray(xd3, ast_GmlNodeTools_clone(xw)), ast_GmlNodeTools_clone(gmlNode)]));
 					break;
 				case 54:
 					var xw1 = _g1[3];
@@ -6301,22 +6303,22 @@
 					switch (_g3[1]) {
 						case 49:
 							var xi1 = _g3[4];
-							if (o != -1) {
-								SfEnumTools_setTo(q, ast_GmlNodeDef_IndexAop(xd4, xw1, xi1, o, v));
-							} else SfEnumTools_setTo(q, ast_GmlNodeDef_IndexSet(xd4, xw1, xi1, v));
+							if (opeartion != -1) {
+								SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_IndexAop(xd4, xw1, xi1, opeartion, v));
+							} else SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_IndexSet(xd4, xw1, xi1, v));
 							break;
 						case 54:
 							var i21 = _g3[5];
 							var i11 = _g3[4];
-							if (o != -1) {
-								SfEnumTools_setTo(q, ast_GmlNodeDef_Index2dAop(xd4, xw1, i11, i21, o, v));
-							} else SfEnumTools_setTo(q, ast_GmlNodeDef_Index2dSet(xd4, xw1, i11, i21, v));
+							if (opeartion != -1) {
+								SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_Index2dAop(xd4, xw1, i11, i21, opeartion, v));
+							} else SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_Index2dSet(xd4, xw1, i11, i21, v));
 							break;
 					}
 					gml_SeekSetOp_resolveSetOp_safe = false;
 					gml_SeekSetOp_resolveSetOp_xw = xw1;
-					ast_GmlNodeTools_seekAllOut(q, st, gml_SeekSetOp_resolveSetOp_rfn, 0);
-					if (!gml_SeekSetOp_resolveSetOp_safe) SfEnumTools_setTo(q, ast_GmlNodeDef_Block(xd4, [ast_GmlNodeDef_EnsureArray(xd4, ast_GmlNodeTools_clone(xw1)), ast_GmlNodeTools_clone(q)]));
+					ast_GmlNodeTools_seekAllOut(gmlNode, st, gml_SeekSetOp_resolveSetOp_rfn, 0);
+					if (!gml_SeekSetOp_resolveSetOp_safe) SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_Block(xd4, [ast_GmlNodeDef_EnsureArray(xd4, ast_GmlNodeTools_clone(xw1)), ast_GmlNodeTools_clone(gmlNode)]));
 					break;
 				case 40:
 					var s3 = _g1[3];
@@ -6324,72 +6326,72 @@
 					if ((f & 1) == 0) {
 						if ((f & 2) != 0) {
 							var k = ast_GmlNodeDef_Number(d, 0, null);
-							if (o != -1) {
-								SfEnumTools_setTo(q, ast_GmlNodeDef_Env1dAop(d, s3, k, o, v));
-							} else SfEnumTools_setTo(q, ast_GmlNodeDef_Env1dSet(d, s3, k, v));
-						} else if (o != -1) {
-							SfEnumTools_setTo(q, ast_GmlNodeDef_EnvAop(d, s3, o, v));
-						} else SfEnumTools_setTo(q, ast_GmlNodeDef_EnvSet(d, s3, v));
+							if (opeartion != -1) {
+								SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_Env1dAop(d, s3, k, opeartion, v));
+							} else SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_Env1dSet(d, s3, k, v));
+						} else if (opeartion != -1) {
+							SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_EnvAop(d, s3, opeartion, v));
+						} else SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_EnvSet(d, s3, v));
 					} else return GmlProgram_seekInst.error("`" + s3 + "` is read-only", _g1[2]);
 					break;
 				case 43:
 					var s4 = _g1[4];
 					if ((data_GmlAPI_varFlags[s4] & 1) == 0) {
-						if (o != -1) {
-							SfEnumTools_setTo(q, ast_GmlNodeDef_EnvFdAop(d, _g1[3], s4, o, v));
-						} else SfEnumTools_setTo(q, ast_GmlNodeDef_EnvFdSet(d, _g1[3], s4, v));
+						if (opeartion != -1) {
+							SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_EnvFdAop(d, _g1[3], s4, opeartion, v));
+						} else SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_EnvFdSet(d, _g1[3], s4, v));
 					} else return GmlProgram_seekInst.error("`" + s4 + "` is read-only", _g1[2]);
 					break;
 				case 46:
 					var s5 = _g1[3];
 					if ((data_GmlAPI_varFlags[s5] & 1) == 0) {
-						if (o != -1) {
-							SfEnumTools_setTo(q, ast_GmlNodeDef_Env1dAop(d, s5, _g1[4], o, v));
-						} else SfEnumTools_setTo(q, ast_GmlNodeDef_Env1dSet(d, s5, _g1[4], v));
+						if (opeartion != -1) {
+							SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_Env1dAop(d, s5, _g1[4], opeartion, v));
+						} else SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_Env1dSet(d, s5, _g1[4], v));
 					} else return GmlProgram_seekInst.error("`" + s5 + "` is read-only", _g1[2]);
 					break;
 				case 69:
 					var k4 = _g1[4];
 					var x5 = _g1[3];
-					if (o != -1) {
-						SfEnumTools_setTo(q, ast_GmlNodeDef_DsListAop(d, x5, k4, o, v));
-					} else SfEnumTools_setTo(q, ast_GmlNodeDef_DsListSet(d, x5, k4, v));
+					if (opeartion != -1) {
+						SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_DsListAop(d, x5, k4, opeartion, v));
+					} else SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_DsListSet(d, x5, k4, v));
 					break;
 				case 74:
 					var k5 = _g1[4];
 					var x6 = _g1[3];
-					if (o != -1) {
-						SfEnumTools_setTo(q, ast_GmlNodeDef_DsMapAop(d, x6, k5, o, v));
-					} else SfEnumTools_setTo(q, ast_GmlNodeDef_DsMapSet(d, x6, k5, v));
+					if (opeartion != -1) {
+						SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_DsMapAop(d, x6, k5, opeartion, v));
+					} else SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_DsMapSet(d, x6, k5, v));
 					break;
 				case 79:
 					var k6 = _g1[5];
 					var i3 = _g1[4];
 					var x7 = _g1[3];
-					if (o != -1) {
-						SfEnumTools_setTo(q, ast_GmlNodeDef_DsGridAop(d, x7, i3, k6, o, v));
-					} else SfEnumTools_setTo(q, ast_GmlNodeDef_DsGridSet(d, x7, i3, k6, v));
+					if (opeartion != -1) {
+						SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_DsGridAop(d, x7, i3, k6, opeartion, v));
+					} else SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_DsGridSet(d, x7, i3, k6, v));
 					break;
 				case 59:
 					var k2 = _g1[4];
 					var x3 = _g1[3];
-					if (o != -1) {
-						SfEnumTools_setTo(q, ast_GmlNodeDef_RawIdAop(d, x3, k2, o, v));
-					} else SfEnumTools_setTo(q, ast_GmlNodeDef_RawIdSet(d, x3, k2, v));
+					if (opeartion != -1) {
+						SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_RawIdAop(d, x3, k2, opeartion, v));
+					} else SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_RawIdSet(d, x3, k2, v));
 					break;
 				case 64:
 					var k3 = _g1[5];
 					var i = _g1[4];
 					var x4 = _g1[3];
-					if (o != -1) {
-						SfEnumTools_setTo(q, ast_GmlNodeDef_RawId2dAop(d, x4, i, k3, o, v));
-					} else SfEnumTools_setTo(q, ast_GmlNodeDef_RawId2dSet(d, x4, i, k3, v));
+					if (opeartion != -1) {
+						SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_RawId2dAop(d, x4, i, k3, opeartion, v));
+					} else SfEnumTools_setTo(gmlNode, ast_GmlNodeDef_RawId2dSet(d, x4, i, k3, v));
 					break;
 				default:
 					return GmlProgram_seekInst.error("Expression is not settable", x[2]);
 			}
 		}
-		return ast_GmlNodeTools_seek(q, st, GmlProgram_seekFunc);
+		return ast_GmlNodeTools_seek(gmlNode, st, GmlProgram_seekFunc);
 	}
 
 	function js__Boot_HaxeError(val) {

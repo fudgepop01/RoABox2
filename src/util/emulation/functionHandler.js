@@ -408,7 +408,9 @@ const functions = (gameState) => {
     set_attack(attack){},
     iasa_script(){},
     can_tap_jump(){},
-    hit_fx_create(sprite_index, hit_length){},
+    hit_fx_create(sprite_index, hit_length){
+      return `hit_fx_create(sprite_get("${getData(sprite_index)}"), ${hit_length})`;
+    },
     spawn_hit_fx(x, y, hit_fx_index){},
     create_hitbox(attack, hitbox_num, x, y){},
     draw_debug_text(x, y, text){},

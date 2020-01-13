@@ -34,7 +34,7 @@
   import Timeline from './components/timeline/Timeline.svelte';
 
   import { saveFile, handleFileOpen } from './util/FileIO.js';
-  import genGmlAST from './util/GMLParser/extractData.js';
+  import genGmlAST from './util/emulation/extractData.js';
 
   let tlc;
 
