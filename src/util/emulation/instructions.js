@@ -1,4 +1,5 @@
 import functions from "./functionHandler";
+import currentItems from './currentItems';
 
 
 const LOOP_LIMIT = 100000;
@@ -545,10 +546,12 @@ export const nodeTypes = (gameState) => {
   }
 }
 
-let gameStateStore = {};
-const getData = ([kind, kindID, pos, ...args], gameState) => {
-  if (!gameState) gameState = gameStateStore;
-  else gameStateStore = gameState;
+const getData = ([kind, kindID, pos, ...args], gameState, scriptName) => {
+  if (!gameState) gameState = currentItems.gameState;
+  else currentItems.gameState = gameState;
+
+  if (!scriptName) scriptName = currentItems.scriptName;
+  else currentItems.scriptName = scriptName;
 
   let dataOut = (nodeTypes(gameState))[kind](...args);
   if (dataOut !== undefined) return dataOut;

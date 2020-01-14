@@ -1,4 +1,5 @@
 import { fileSystem } from '../../store/fileSystem';
+import gameStateBase from './gameStateBase';
 import editors from '../../store/editors.js';
 import getData from './instructions';
 
@@ -27,16 +28,9 @@ const initialize = (compiled) => {
     'utilt'
   ];
 
-  const out = {
-    scopes: [],
-    instances: {
-      self: {
-        fields: {}
-      }
-    },
-  };
+  const out = gameStateBase;
   for (const scriptName of initOrder) {
-    if (scripts['_' + scriptName]) getData(scripts['_' + scriptName].node, out);
+    if (scripts['_' + scriptName]) getData(scripts['_' + scriptName].node, out, scriptName);
   }
 
   return out;
