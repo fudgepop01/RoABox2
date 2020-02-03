@@ -10,9 +10,10 @@
     <div class="center-align">
       <svg><path d={mdiSkipPrevious}/></svg>
       <svg on:click={togglePlay}><path d={playing ? mdiPause : mdiPlay}/></svg>
-      <svg><path d={mdiSkipNext}/></svg>
+      <svg on:click={nextState}><path d={mdiSkipNext}/></svg>
     </div>
     <div class="right-align">
+      <svg on:click={toggleOverPlay}><path d={!overPlay ? mdiFormatTextWrappingOverflow : mdiSync}></path></svg>
       <svg on:click={playSpeed.increase}><path d={mdiMenuUp}/></svg>
       <span class="play-speed">{`x${$playSpeed}`.padStart(5, ' ')}</span>
       <svg on:click={playSpeed.decrease}><path d={mdiMenuDown}/></svg>
@@ -35,13 +36,13 @@
           <span
             class="window-name"
           >{win.name}</span>
-          {#if $selectedWindow === i}
+          <!-- {#if $selectedWindow === i}
             <div class="window-controls">
               <svg viewBox="0 0 24 24" on:click|stopPropagation={addWindowLeft}><path d={mdiPlus}/></svg>
               <svg viewBox="0 0 24 24" on:click|stopPropagation={removeWindow}><path d={mdiDelete}/></svg>
               <svg viewBox="0 0 24 24" on:click|stopPropagation={addWindowRight}><path d={mdiPlus}/></svg>
             </div>
-          {/if}
+          {/if} -->
         </div>
       {/each}
       {#if $windows.length === 0}
@@ -54,10 +55,10 @@
           <span
             class="window-name"
             style="color: #fff"
-          >no windows defined</span>
-          <div class="window-controls">
+          >no parts created</span>
+          <!-- <div class="window-controls">
             <svg viewBox="0 0 24 24" on:click|stopPropagation={addWindowRight}><path d={mdiPlus}/></svg>
-          </div>
+          </div> -->
         </div>
       {/if}
     </div>
@@ -93,6 +94,7 @@
     bind:windowBoundaries
     bind:timelineScale
     bind:timelineWidth
+    bind:overPlay
     on:mounted={getActions}
   />
 </div>
@@ -110,7 +112,9 @@
     mdiMenuDown,
     mdiMenuUp,
     mdiPlus,
-    mdiDelete
+    mdiDelete,
+    mdiFormatTextWrappingOverflow,
+    mdiSync
   } from '@mdi/js'
 
   import {
@@ -135,18 +139,17 @@
 
   let actionsLoaded = false;
   let togglePlay;
-  let addWindowLeft;
-  let addWindowRight;
-  let removeWindow;
   let handleZoom;
+  let nextState;
+  let overPlay;
+  let toggleOverPlay;
   const getActions = async (evt) => {
     // recieve data
     ({
       togglePlay,
-      addWindowLeft,
-      addWindowRight,
-      removeWindow,
-      handleZoom
+      handleZoom,
+      nextState,
+      toggleOverPlay
     } = evt.detail);
 
     // update

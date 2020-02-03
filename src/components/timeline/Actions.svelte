@@ -10,7 +10,10 @@
     frameCount
   } from '../../store/windows.js';
 
+  import { timeline } from '../../store/gameState.js';
+
   export let playing = false;
+  export let overPlay = false;
   export let timelineScale;
   export let timelineWidth;
 
@@ -25,8 +28,8 @@
       if (fpsMonitor >= (1 / $playSpeed)) {
         fpsMonitor = 0;
         if ($currentFrame + 1 >= $frameCount) {
-          currentFrame.set(0);
-          //if (!anim.loop) { playing = false; }
+          if (overPlay) timeline.nextFrame($currentFrame + 1);
+          else currentFrame.set(0);
         }
         else { currentFrame.update(n => n + 1) }
       }
@@ -37,25 +40,7 @@
     playing = !playing;
     if (playing) loop();
   }
-
-  const addWindowLeft = (evt) => {
-    windows.createNew($selectedWindow);
-    selectedWindow.update(n => n + 1);
-  }
-  const removeWindow = async (evt) => {
-    currentFrame.update(n => {
-      if (n > $windowPositions[$selectedWindow]) {
-        return n - $windows[$selectedWindow].frameCount
-      } else { return n }
-    });
-    windows.remove($selectedWindow);
-    await tick();
-    if ($currentFrame < 0) currentFrame.set(0);
-    selectedWindow.set(-1);
-  }
-  const addWindowRight = (evt) => {
-    windows.createNew($selectedWindow + 1);
-  }
+  const toggleOverPlay = () => overPlay = !overPlay;
 
   const handleZoom = (evt) => {
     timelineScale += evt.deltaY / 100
@@ -63,14 +48,19 @@
     else if (timelineScale > 100) timelineScale = 100;
   }
 
+  const NS = () => {
+    timeline.nextFrame($currentFrame + 1);
+    currentFrame.update(n => n + 1);
+  }
+
   const dispatch = createEventDispatcher();
   onMount(() => {
     dispatch('mounted', {
       togglePlay,
-      addWindowLeft,
-      addWindowRight,
-      removeWindow,
       handleZoom,
+      nextState: NS,
+      overPlay,
+      toggleOverPlay,
       callback(tlc) {
         timelineContainer = tlc;
       }

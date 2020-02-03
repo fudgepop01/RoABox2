@@ -87,12 +87,26 @@ const fileSystemFactory = () => {
         children: []
       })
     } else {
-      folder.children.push({
-        type: 'file',
-        name: `${name ? name : 'new_file'}${highest !== 0 ? `(${highest})` : ''}`,
-        extension: `${extension ? extension : 'gml'}`,
-        data: data ? data : 'NONE'
-      })
+      if (extension === 'png') {
+        const i = document.createElement('img');
+        i.onload = () => {
+          folder.children.push({
+            type: 'file',
+            name: `${name ? name : 'new_file'}${highest !== 0 ? `(${highest})` : ''}`,
+            extension: 'png',
+            base64: 'data:image/png;base64,' + data,
+            data: i
+          })
+        }
+        i.src = 'data:image/png;base64,' + data;
+      } else {
+        folder.children.push({
+          type: 'file',
+          name: `${name ? name : 'new_file'}${highest !== 0 ? `(${highest})` : ''}`,
+          extension: `${extension ? extension : 'gml'}`,
+          data: data ? data : 'NONE'
+        })
+      }
     }
 
     return highest;
@@ -207,6 +221,17 @@ const fileSystemFactory = () => {
 
       return files.filter((file) => file.extension === 'gml');
     },
+    async getAllSprites() {
+      let item = {
+        type: 'folder',
+        name: 'characters',
+        path: '.',
+        children: get(myStore)
+      }
+      const files = flattenFiles(item);
+
+      return files.filter((file) => file.extension === 'png');
+    },
     async downloadAllAsZip() {
       let item = {
         type: 'folder',
@@ -248,6 +273,7 @@ const fileSystemFactory = () => {
           let path = zipName + '/' + entry.name.substring(0, entry.name.lastIndexOf('/'));
           if (path.length > 0) path = '/' + path;
           // console.log(entry.name, name, extension, path);
+
 
           files.push({
             ...entry,

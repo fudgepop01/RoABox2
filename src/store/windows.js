@@ -1,4 +1,5 @@
 import { writable, derived } from 'svelte/store';
+import { timeline } from './gameState';
 
 export const currentFrame = writable(0);
 export const selectedWindow = writable(-1);
@@ -11,31 +12,33 @@ const randColor = () => {
   `;
 }
 
-const createWindows = () => {
-  const { subscribe, set, update } = writable([]);
-
-  return {
-    subscribe,
-    clear() { set(0) },
-    createNew(index) {
-      update(n => {
-        n.splice(index, 0, {
-          name: 'new window',
+export const windows = derived(
+  timeline,
+  $timeline => {
+    if ($timeline.length === 0) return [];
+    const out = [];
+    let currSectionLength = 0;
+    let lastState = $timeline[0].instances.self.fields.state;
+    for (const frame of $timeline) {
+      currSectionLength ++;
+      if (frame.instances.self.fields.state !== lastState) {
+        out.push({
+          name: lastState,
           color: randColor(),
-          frameCount: 8
+          frameCount: currSectionLength
         })
-        return n;
-      })
-    },
-    remove(index) {
-      update(n => {
-        n.splice(index, 1)
-        return n;
-      })
+        lastState = frame.instances.self.fields.state;
+        currSectionLength = 0;
+      }
     }
+    out.push({
+      name: lastState,
+      color: randColor(),
+      frameCount: currSectionLength
+    });
+    return out;
   }
-}
-export const windows = createWindows();
+);
 export const frameCount = derived(
   windows,
   $windows => {

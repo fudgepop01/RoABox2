@@ -3,7 +3,7 @@ import punycode from 'punycode';
 import 'typeface-roboto';
 import 'typeface-roboto-mono';
 
-import './util/GMLParser/gmlivemoddump';
+import './util/emulation/gmlivemoddump';
 
 const app = new App({
 	target: document.body,

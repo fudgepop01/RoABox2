@@ -4,23 +4,28 @@
       <div class="editor-container">
         <Monaco kind="main" style="height: 100%" on:saveFile={saveFile} on:genAST={genGmlAST}/>
       </div>
-      <div class="variable-editor">
-        <Monaco kind="param" style="height: 100%" on:updateParams={updateParams} />
+      <div class="fs-container">
+        <FileSystem on:fileSelected={handleFileOpen} />
       </div>
     </div>
-
     <div class="vertical right-side">
       <div class="horizontal preview-section">
         <div class="vertical">
           <div class="timeline-container" bind:this={tlc}>
             <Timeline timelineWidth={tlc ? tlc.offsetWidth : undefined} />
           </div>
-          <div class="preview-container"></div>
+          <div class="preview-container">
+            <Preview></Preview>
+          </div>
         </div>
         <div class="toolbar-container"></div>
       </div>
-      <div class="fs-container">
-        <FileSystem on:fileSelected={handleFileOpen} />
+      <div class="debug-container vertical" style="height: 100%">
+        <div class="tabs">
+        </div>
+        <div class="monaco-section">
+          <Monaco kind="input" style="height: 100%" on:saveFile={saveFile} />
+        </div>
       </div>
     </div>
   </div>
@@ -32,6 +37,7 @@
   import FileSystem from './components/webFS/WebFS.svelte';
   import Monaco from './components/monaco/monaco-editor.svelte';
   import Timeline from './components/timeline/Timeline.svelte';
+  import Preview from './components/preview/index.svelte';
 
   import { saveFile, handleFileOpen } from './util/FileIO.js';
   import genGmlAST from './util/emulation/extractData.js';
@@ -48,6 +54,7 @@
     width: 100vw;
     height: 100vh;
     position: relative;
+    overflow: hidden;
   }
 
   #prompts {
@@ -81,16 +88,23 @@
   .horizontal { flex-direction: row; }
   .vertical { flex-direction: column; }
 
-  .right-side { width: 800px; }
+  .right-side { width: 960px; }
   .editor-container { height: 500px; }
-  .variable-editor { flex-grow: 1; }
-  .preview-section { height: 500px; }
-  .timeline-container { height: 75px; border: 1px solid black; }
+  .debug-container { flex-grow: 1; }
+  .preview-section { width: 800px; }
+  .timeline-container { height: 90px; border: 1px solid black; }
   .toolbar-container { width: 50px; }
+  .tabs { height: 50px; }
+
+  .monaco-section {
+    height: 100%;
+  }
 
   .preview-container {
     background-color: #888;
     flex-grow: 1;
+    width: 768px;
+    height: 400px;
   }
 
   .fs-container {

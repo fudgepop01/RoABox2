@@ -80,13 +80,25 @@
   }
 
   const storeAll = () => {
+    const fs = $fileSystem;
     store({
       fs: $fileSystem
     });
   }
 
+  const reloadAllImages = (folder) => {
+    for (const f of folder.children) {
+      if (f.type === 'folder') reloadAllImages(f);
+      else if (f.extension === 'png') {
+         f.data = document.createElement('img');
+         f.data.src = f.base64;
+      }
+    }
+  }
   const loadFromStore = () => {
-    fileSystem.set(store().fs);
+    const fs = store().fs;
+    reloadAllImages({children: fs});
+    fileSystem.set(fs);
   }
 </script>
 

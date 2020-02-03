@@ -1,4 +1,9 @@
-import constants, { reverseLookup, baseAttack, baseHitbox, baseWindow } from './constantLookup';
+import seedRandom from 'seedrandom';
+
+import { get } from 'svelte/store';
+import { timeline as TL } from '../../store/gameState';
+
+import constants, { reverseLookup } from './constantLookup';
 import getData, { nodeTypes } from './instructions';
 import currentItems from './currentItems';
 
@@ -6,8 +11,8 @@ const getAttackTarget = (gameState, scriptName, attack) => {
   gameState.helpers.ensureAttack(attack);
   const attacks = gameState.instances.self.attacks;
   const target = (scriptName === attack.substring(3).toLowerCase()) ?
-    attacks[attackName].initial
-    : attacks[attackName].modified;
+    attacks[attack].initial
+    : attacks[attack].modified;
 
   return target;
 }
@@ -402,16 +407,35 @@ const functions = (gameState) => {
     sound_get(v){
       return `sound_get("${getData(v)}")`
     },
-    sprite_change_offset(spr, xoff, yoff){},
+
+    sprite_change_offset(spr, xoff, yoff){
+      gameState.resources[getData(spr)].xoff = getData(xoff);
+      gameState.resources[getData(spr)].yoff = getData(yoff);
+    },
+
     asset_get(asset){
       return `asset_get("${getData(asset)}")`
     },
     instance_create(x, y, obj){},
     instance_destroy(...values){},
-    sprite_change_collision_mask(sprite, sepmasks, bboxmode, bbleft, bbtop, bbright, bbbottom, kind){},
+
+    sprite_change_collision_mask(sprite, sepmasks, bboxmode, bbleft, bbtop, bbright, bbbottom, kind){
+
+    },
+
     trigger_b_reverse(){},
-    random_func(index, high_value, floored){},
-    random_func_2(index, high_value, floored){},
+    random_func(index, high_value, floored){
+      const rand = seedRandom(getData(index) + get(TL).length);
+      let result = rand() * getData(high_value);
+      if (getData(floored)) return Math.floor(result);
+      else return result;
+    },
+    random_func_2(index, high_value, floored){
+      const rand = seedRandom(getData(index) + 25 + get(TL).length);
+      let result = rand() * getData(high_value);
+      if (getData(floored)) return Math.floor(result);
+      else return result;
+    },
     sound_play(sound){},
     sound_stop(sound){},
     attack_end(){},
@@ -427,15 +451,24 @@ const functions = (gameState) => {
     create_hitbox(attack, hitbox_num, x, y){},
     draw_debug_text(x, y, text){},
     take_damage(player, attacker, damage){},
+
     set_color_profile_slot(color, shade, r, g, b){},
     set_color_profile_slot_range(shade, r, g, b){},
     shader_start(){},
     shader_end(){},
+
     get_hitbox_angle(hitbox_id){},
+
     set_victory_theme(index){},
-    get_gameplay_time(){},
+
+    get_gameplay_time(){
+      return get(TL).length + 1;
+    },
     get_game_timer(){},
+
     init_shader(){},
+
+    // getters
     get_stage_data(index){},
     get_state_name(state){},
     get_player_damage(player){},
@@ -443,6 +476,8 @@ const functions = (gameState) => {
     get_player_team(player){},
     get_player_color(player){},
     clear_button_buffer(input_id){},
+
+    // views
     view_get_wview(){},
     view_get_hview(){},
     view_get_xview(){},
@@ -450,53 +485,53 @@ const functions = (gameState) => {
 
     // ANCHOR ATTACK VALUES
     set_attack_value(attack, index, value){
-      let attackName = getData(attack);
-      let indexName = getData(index);
+      let attackName = attack[4];
+      let indexName = index[4];
       let trueValue = getData(value);
 
       if (typeof attackName === "number") attackName = reverseLookup('AT_', attackName);
       if (typeof indexName === "number") indexName = reverseLookup('AG_', indexName);
 
       const target = getAttackTarget(gameState, scriptName, attackName);
-      target[attackName][indexName] = trueValue;
+      target[indexName] = trueValue;
     },
     get_attack_value(attack, index){
-      let attackName = getData(attack);
-      let indexName = getData(index);
+      let attackName = attack[4];
+      let indexName = index[4];
       if (typeof attackName === "number") attackName = reverseLookup('AT_', attackName);
       if (typeof indexName === "number") indexName = reverseLookup('AG_', indexName);
 
       return gameState.helpers.getAttack(attackName)[indexName];
     },
     reset_attack_value(attack, index){
-      let attackName = getData(attack);
-      let indexName = getData(index);
+      let attackName = attack[4];
+      let indexName = index[4];
 
       if (typeof attackName === "number") attackName = reverseLookup('AT_', attackName);
       if (typeof indexName === "number") indexName = reverseLookup('AG_', indexName);
 
       const target = getAttackTarget(gameState, scriptName, attackName);
-      delete target[attackName][indexName];
+      delete target[indexName];
     },
 
     // ANCHOR WINDOW VALUES
     set_window_value(attack, window, index, value){
-      let attackName = getData(attack);
+      let attackName = attack[4];
       let windowNum = getData(window);
-      let indexName = getData(index);
+      let indexName = index[4];
       let trueValue = getData(value);
 
       if (typeof attackName === "number") attackName = reverseLookup('AT_', attackName);
       if (typeof indexName === "number") indexName = reverseLookup('AG_WINDOW_', indexName);
 
       const target = getAttackTarget(gameState, scriptName, attackName);
-      if (!target[attackName].windows[windowNum]) target[attackName].windows[windowNum] = {};
-      target[attackName].windows[windowNum][indexName] = trueValue;
+      if (!target.windows[windowNum]) target.windows[windowNum] = {};
+      target.windows[windowNum][indexName] = trueValue;
     },
     get_window_value(attack, window, index){
-      let attackName = getData(attack);
+      let attackName = attack[4];
       let windowNum = getData(window);
-      let indexName = getData(index);
+      let indexName = index[4];
 
       if (typeof attackName === "number") attackName = reverseLookup('AT_', attackName);
       if (typeof indexName === "number") indexName = reverseLookup('AG_WINDOW_', indexName);
@@ -504,44 +539,44 @@ const functions = (gameState) => {
       return gameState.helpers.getAttack(attackName).windows[windowNum][indexName];
     },
     reset_window_value(attack, window, index){
-      let attackName = getData(attack);
+      let attackName = attack[4];
       let windowNum = getData(window);
-      let indexName = getData(index);
+      let indexName = index[4];
 
       if (typeof attackName === "number") attackName = reverseLookup('AT_', attackName);
       if (typeof indexName === "number") indexName = reverseLookup('AG_WINDOW_', indexName);
 
       const target = getAttackTarget(gameState, scriptName, attackName);
-      delete target[attackName].windows[windowNum][indexName];
+      delete target.windows[windowNum][indexName];
     },
 
     // ANCHOR HITBOX VALUES
     set_hitbox_value(attack, hitbox, index, value){
-      let attackName = getData(attack);
+      let attackName = attack[4];
       let hitboxNum = getData(hitbox);
-      let indexName = getData(index);
+      let indexName = index[4];
       let trueValue = getData(value);
 
       if (typeof attackName === "number") attackName = reverseLookup('AT_', attackName);
       if (typeof indexName === "number") indexName = reverseLookup('HG_', indexName);
 
       const target = getAttackTarget(gameState, scriptName, attackName);
-      if (!target[attackName].hitboxes[hitboxNum]) target[attackName].hitboxes[hitboxNum] = {};
-      target[attackName].hitboxes[hitboxNum][indexName] = trueValue;
+      if (!target.hitboxes[hitboxNum]) target.hitboxes[hitboxNum] = {};
+      target.hitboxes[hitboxNum][indexName] = trueValue;
     },
     get_hitbox_value(attack, hitbox, index){
-      let attackName = getData(attack);
+      let attackName = attack[4];
       let hitboxNum = getData(hitbox);
-      let indexName = getData(index);
+      let indexName = index[4];
       if (typeof attackName === "number") attackName = reverseLookup('AT_', attackName);
       if (typeof indexName === "number") indexName = reverseLookup('HG_', indexName);
 
       return gameState.helpers.getAttack(attackName).hitboxes[hitboxNum][indexName];
     },
     reset_hitbox_value(attack, hitbox, index){
-      let attackName = getData(attack);
+      let attackName = attack[4];
       let hitboxNum = getData(hitbox);
-      let indexName = getData(index);
+      let indexName = index[4];
       if (typeof attackName === "number") attackName = reverseLookup('AT_', attackName);
       if (typeof indexName === "number") indexName = reverseLookup('HG_', indexName);
 
@@ -551,24 +586,24 @@ const functions = (gameState) => {
 
     // ANCHOR NUM HITBOXES
     set_num_hitboxes(attack, value){
-      let attackName = getData(attack);
+      let attackName = attack[4];
       let trueValue = getData(value);
 
       if (typeof attackName === "number") attackName = reverseLookup('AT_', attackName);
       const target = getAttackTarget(gameState, scriptName, attackName);
 
       for (let i = 1; i <= trueValue; i++) {
-        if (!target[attackName].hitboxes[i]) target[attackName].hitboxes[i] = {};
+        if (!target.hitboxes[i]) target.hitboxes[i] = {};
       }
-      target[attackName].__NUM_HITBOXES = trueValue;
+      target.__NUM_HITBOXES = trueValue;
     },
     get_num_hitboxes(attack){
-      let attackName = getData(attack);
+      let attackName = attack[4];
       if (typeof attackName === "number") attackName = reverseLookup('AT_', attackName);
       return gameState.helpers.getAttack(attackName).__NUM_HITBOXES;
     },
     reset_num_hitboxes(attack){
-      let attackName = getData(attack);
+      let attackName = attack[4];
       if (typeof attackName === "number") attackName = reverseLookup('AT_', attackName);
       const target = getAttackTarget(gameState, scriptName, attackName);
       delete target.__NUM_HITBOXES;

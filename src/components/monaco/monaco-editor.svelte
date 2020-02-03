@@ -12,7 +12,7 @@
 <script>
   import { onMount, createEventDispatcher } from 'svelte';
 
-  import { setupMain, setupParams } from './commands.js';
+  import { setupMain, setupInput } from './commands.js';
   import editors from '../../store/editors.js';
 
   export let style;
@@ -28,17 +28,22 @@
     if (_monaco) monaco = _monaco;
     else monaco = (await monaco_promise).default;
 
-    if (kind === 'param') {
+    if (kind === 'input') {
       editor = monaco.editor.create(
         container,
         {
-          value: '; variables parsed from the character\'s code will appear here',
-          language: 'ini',
+          value: [
+            '// files in scripts/debug will be opened in here.',
+            '// use them to setup and test things.',
+            '// only the currently-opened file will be run',
+            '// this file will be run before everything else on every frame'
+          ].join('\n'),
+          language: 'gamemaker',
           theme: 'vs-dark'
         }
       );
-      setupParams(editor, dispatch);
-      editors.paramEditor = editor;
+      setupInput(editor, dispatch);
+      editors.inputEditor = editor;
 
     } else if (kind === 'main') {
       editor = monaco.editor.create(

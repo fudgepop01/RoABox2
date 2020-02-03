@@ -3,13 +3,13 @@ import monaco from "./monaco"
 /**
  * @param {monaco.editor.IStandaloneCodeEditor} editor
  */
-export const addSaveFunction = (editor, dispatch) => {
+export const addSaveFunction = (editor, dispatch, saveType) => {
   editor.addAction({
     id: 'save-file',
     label: 'save file',
     keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S],
     keybindingContext: null,
-    run() { dispatch('saveFile') }
+    run() { dispatch('saveFile', saveType) }
   })
 }
 
@@ -40,10 +40,10 @@ export const addUpdateParams = (editor, dispatch) => {
 }
 
 export const setupMain = (editor, dispatch) =>{
-  addSaveFunction(editor, dispatch);
+  addSaveFunction(editor, dispatch, 'main');
   addComputeGML(editor, dispatch);
 }
 
-export const setupParams = (editor, dispatch) =>{
-  addUpdateParams(editor, dispatch);
+export const setupInput = (editor, dispatch) =>{
+  addSaveFunction(editor, dispatch, 'input');
 }

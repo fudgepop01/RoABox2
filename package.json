@@ -39,6 +39,8 @@
     "markdown-it": "^10.0.0",
     "monaco-editor": "^0.18.1",
     "punycode": "^2.1.1",
+    "rfdc": "^1.1.4",
+    "seedrandom": "^3.0.5",
     "sirv-cli": "^0.4.4",
     "streamsaver": "^2.0.3"
   },

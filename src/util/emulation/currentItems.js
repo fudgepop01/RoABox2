@@ -1,4 +1,4 @@
 export default {
   scriptName: '',
-  gameState = {}
+  gameState: {}
 }

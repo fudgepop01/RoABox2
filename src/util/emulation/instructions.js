@@ -35,10 +35,11 @@ const getScopeRef = ([code,,, ...args], gameState) => {
     case 'Field':
       const instVal = getData(args[0]);
       if (instVal === 'Self') {
-        return [gameState.instances.self.fields, args[1]];
+        if (gameState.context) return [gameState.context.fields, args[1]];
+        else return [gameState.instances.self.fields, args[1]];
       } else {
-        return instVal[fieldName];
         debugger;
+        return instVal[fieldName];
       }
 
     case 'DsMap':
@@ -80,12 +81,6 @@ const BinOps = (operation, a, b) => {
     0x50(){return a && b},
     0x60(){return a || b}
   })[operation]();
-}
-
-const newScope = (node, gameState) => {
-  gameState.scopes.push({});
-  getData(node, gameState);
-  gameState.scopes.pop();
 }
 
 export const nodeTypes = (gameState) => {
@@ -250,7 +245,8 @@ export const nodeTypes = (gameState) => {
     Field(instance, fieldName){
       const instVal = getData(instance);
       if (instVal === 'Self') {
-        return gameState.instances.self.fields[fieldName]
+        if (gameState.context) return gameState.context.fields[fieldName];
+        else return gameState.instances.self.fields[fieldName];
       } else {
         return instVal[fieldName];
         debugger;
@@ -259,7 +255,8 @@ export const nodeTypes = (gameState) => {
     FieldSet(instance, fieldName, val){
       const instVal = getData(instance);
       if (instVal === 'Self') {
-        gameState.instances.self.fields[fieldName] = getData(val);
+        if (gameState.context) gameState.context.fields[fieldName] = getData(val);
+        else gameState.instances.self.fields[fieldName] = getData(val);
       } else {
         instVal[fieldName] = getData(val);
         debugger;
@@ -268,9 +265,11 @@ export const nodeTypes = (gameState) => {
     FieldAop(instance, fieldName, operation, val){
       const instVal = getData(instance);
       if (instVal === 'Self') {
-        gameState.instances.self.fields[fieldName] = BinOps(
+        let ctx = gameState.context;
+        if (!ctx) ctx = gameState.instances.self;
+        ctx.fields[fieldName] = BinOps(
           operation,
-          gameState.instances.self.fields[fieldName],
+          ctx.fields[fieldName],
           getData(val)
         );
       } else {
@@ -435,7 +434,7 @@ export const nodeTypes = (gameState) => {
           }
         }
       }
-      if (condMet || defCase) {
+      if ((condMet || defCase) && def) {
         getData(def);
       }
     },
@@ -511,8 +510,16 @@ export const nodeTypes = (gameState) => {
       gameState.scopes.pop();
     }, // 95
     With(ctx, node){
-      // TODO: not going to support this just yet
-      console.error('with statements currently unsupported');
+      const objType = getData(ctx);
+      for (const [name, inst] of Object.entries(gameState.instances)) {
+        if (inst.fields.object_index === objType) {
+          gameState.scopes.push({});
+          gameState.context = inst;
+          getData(node);
+          gameState.context = null;
+          gameState.scopes.pop({});
+        }
+      }
     },
     Once(node){
       // ???
