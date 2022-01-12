@@ -36,7 +36,7 @@
   "dependencies": {
     "common-tags": "^1.8.0",
     "lz-string": "^1.4.4",
-    "markdown-it": "^10.0.0",
+    "markdown-it": "^12.3.2",
     "monaco-editor": "^0.18.1",
     "punycode": "^2.1.1",
     "rfdc": "^1.1.4",
